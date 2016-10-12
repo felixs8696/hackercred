@@ -1,4 +1,14 @@
 import React from 'react';
+import {Tabs, Tab} from 'material-ui/Tabs';
+
+const styles = {
+  headline: {
+    fontSize: 16,
+    paddingTop: 16,
+    marginBottom: 12,
+    fontWeight: 400,
+  },
+};
 
 var image = 'http://fullhdpictures.com/wp-content/uploads/2016/06/Mark-Zuckerberg-HD-Wallpaper.jpg';
 
@@ -24,39 +34,76 @@ function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-export default Content = () => (
-  <div>
-    <div className="dash_cover" style={style}>
-      <div className="cover-content">
-        <div className="cover-summary">
-          <div className="personal-info">
-            <div className="personal-name">
-              {user.name}
+export default class Content extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      value: 'a'
+    };
+    this._handleChange = this._handleChange.bind(this);
+  }
+
+  _handleChange(value) {
+    this.setState({...this.state,
+      value: value
+    });
+  };
+
+  render() {
+    return (
+      <div>
+        <div className="dash_cover" style={style}>
+          <div className="cover-content">
+            <div className="cover-summary">
+              <div className="personal-info">
+                <div className="personal-name">
+                  {user.name}
+                </div>
+                <div>{user.school}</div>
+                <div>{user.degree + ' ' + user.major}</div>
+              </div>
+              <div className="skill-chips">
+                {skillChips}
+              </div>
             </div>
-            <div>{user.school}</div>
-            <div>{user.degree + ' ' + user.major}</div>
-          </div>
-          <div className="skill-chips">
-            {skillChips}
-          </div>
-        </div>
-        <div className="stats-container">
-          <div className="followers">
-            {user.followers}
-          </div>
-          <div className="hacker-points accent-font">
-            {numberWithCommas(user.points)}
+            <div className="stats-container">
+              <div className="followers">
+                {user.followers}
+              </div>
+              <div className="hacker-points accent-font">
+                {numberWithCommas(user.points)}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div className="dash_content">
-      <div className="dash_sidebar">
+        <div className="dash_content">
+          <div className="dash_sidebar">
 
+          </div>
+          <Tabs value={this.state.value} onChange={this._handleChange}>
+            <Tab label="Tab A" value="a" >
+              <div>
+                <h2 style={styles.headline}>Controllable Tab A</h2>
+                <p>
+                  Tabs are also controllable if you want to programmatically pass them their values.
+                  This allows for more functionality in Tabs such as not
+                  having any Tab selected or assigning them different values.
+                </p>
+              </div>
+            </Tab>
+            <Tab label="Tab B" value="b">
+              <div>
+                <h2 style={styles.headline}>Controllable Tab B</h2>
+                <p>
+                  This is another example of a controllable tab. Remember, if you
+                  use controllable Tabs, you need to give all of your tabs values or else
+                  you wont be able to select them.
+                </p>
+              </div>
+            </Tab>
+          </Tabs>
+        </div>
       </div>
-      <div className="dash_tabs">
-
-      </div>
-    </div>
-  </div>
-);
+    )
+  }
+}

@@ -105,20 +105,13 @@
 
 // Dashboard Content /////////////////////////////////////////////////////
 .dash_content {
-  display: block;
+  display: table;
   height: auto;
-  
+
   .dash_sidebar {
+    display: table-cell;
     width: 45px;
     height: 100%;
     background-color: $main-darkblue;
-  }
-
-  .dash_tabs {
-    height: 45px;
-    width: calc(100% - 45px);
-    background-color: white;
-    @include navbar-shadow;
-    float: right;
   }
 }

@@ -1,7 +1,11 @@
 import React from 'react';
 
-export default Navbar = () => (
-  <div className="dash_navbar title">
-    Hacker Cred
-  </div>
-);
+export default class Navbar extends React.Component {
+  render() {
+    return (
+      <div className="dash_navbar title">
+        Hacker Cred
+      </div>
+    )
+  }
+}
