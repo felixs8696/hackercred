@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Raleway:400,600,700,900|Roboto:300,400,400i,500,700');
+$dark-gray: #2F2F2F;
+$dark-blue: #1D2126;
+$main-darkgray: $dark-gray;
+$main-darkblue: $dark-blue;
+
+@mixin roboto-font($weight) {
+  font-family: 'Roboto', 'Lato', 'Helvetica', 'Arial', sans-serif;
+  font-weight: $weight;
+}
+
+@mixin raleway-font($weight) {
+  font-family: 'Raleway', 'Roboto', 'Lato', 'Helvetica', 'Arial', sans-serif;
+  font-weight: $weight;
+}

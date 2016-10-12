@@ -1,0 +1,15 @@
+@import '_variables';
+
+body {
+  margin: 0;
+  @include roboto-font(400);
+}
+
+.title {
+  @include raleway-font(600);
+  letter-spacing: .5px;
+}
+
+.heading {
+  @include roboto-font(700);
+}
