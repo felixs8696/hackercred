@@ -15,6 +15,8 @@
   line-height: 45px;
   text-align: center;
   vertical-align: middle;
+
+  position: fixed;
 }
 
 // Dashboard Cover ///////////////////////////////////////////////////////
@@ -33,7 +35,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    padding: 30px;
+    padding: $padding-amount;
     font-size: $h2-fontsize;
     letter-spacing: $letter-space;
 
@@ -48,7 +50,7 @@
       .hacker-points {
         display: inline-block;
         color: white;
-        padding: 5px 15px;
+        padding: $buttonlike-padding;
         vertical-align: middle;
       }
 
@@ -74,7 +76,7 @@
       padding-left: 45px;
 
       .personal-info {
-        line-height: 2rem;
+        line-height: $display-lineheight;
         position: relative;
         top: 0;
 
@@ -93,7 +95,7 @@
         .skill-chip {
           border-radius: 30px;
           border: 1px solid white;
-          padding: 5px 15px;
+          padding: $buttonlike-padding;
           display: inline-block;
           margin-right: 10px;
           margin-bottom: 10px;
@@ -104,14 +106,69 @@
 }
 
 // Dashboard Content /////////////////////////////////////////////////////
-.dash_content {
+.dash-content {
   display: table;
-  height: auto;
+  width: 100%;
+  background-color: #F7F7F7;
 
-  .dash_sidebar {
+  .dash-sidebar {
     display: table-cell;
     width: 45px;
     height: 100%;
     background-color: $main-darkblue;
+  }
+
+  .tab-content {
+    padding: $padding-amount;
+
+    .profile-content {
+      line-height: $display-lineheight;
+
+      .profile-headline {
+        font-size: $title-fontsize;
+        color: $accent-green;
+        @include roboto-font(700);
+        margin-bottom: 30px;
+
+        .profile-hp,
+        .profile-ranking {
+          display: inline-block;
+        }
+
+        .profile-ranking {
+          padding: $buttonlike-padding;
+        }
+
+        .profile-hp::after {
+          content: ' HP';
+        }
+      }
+
+      .profile-about {
+
+        .profile-title {
+          font-size: $h1-fontsize;
+          @include roboto-font(700);
+          margin-bottom: 4px;
+        }
+
+        .profile-location,
+        .profile-interest {
+          font-size: $h2-fontsize;
+        }
+
+        .profile-title::before {
+          content: 'Currently ';
+        }
+
+        .profile-location::before {
+          content: 'Based in ';
+        }
+
+        .profile-interest::before {
+          content: 'Interested in ';
+        }
+      }
+    }
   }
 }

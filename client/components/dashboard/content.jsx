@@ -23,7 +23,16 @@ var user = {
   major: 'Computer Science',
   skills: ['Algorithms', 'Data Structures', 'Security', 'Software Engineering', 'Artificial Intelligence', 'Dynamic Programming', 'Web Design', 'Operating Systems', 'Internet Architecture'],
   followers: 1039,
-  points: 1024497
+  points: 1024497,
+  ranking: "Expert Hacker",
+  title: "CEO of Facebook",
+  location: "San Francisco Bay Area",
+  interest: "Computer Software",
+  languages: ["JavaScript", "HTML/CSS", "Java", "Python", "C", "R", "Bash", "LaTeX", "XML"],
+  favorites: ["Algorithms", "Data Structures", "Security", "Frontend Design", "Artifical Intelligence", "Dynamic Programming"],
+  classes: ["CS170", "CS188", "CS61B", "CS61A", "CS61C"],
+  links: ["facebook.com/zuck"],
+  email: "mark@fb.com"
 }
 
 var skillChips = user.skills.map(function(skill) {
@@ -38,7 +47,7 @@ export default class Content extends React.Component {
   constructor() {
     super()
     this.state = {
-      value: 'a'
+      value: 'profile'
     };
     this._handleChange = this._handleChange.bind(this);
   }
@@ -76,24 +85,39 @@ export default class Content extends React.Component {
             </div>
           </div>
         </div>
-        <div className="dash_content">
-          <div className="dash_sidebar">
+        <div className="dash-content">
+          <div className="dash-sidebar">
 
           </div>
           <Tabs value={this.state.value} onChange={this._handleChange}>
-            <Tab label="Tab A" value="a" >
-              <div>
-                <h2 style={styles.headline}>Controllable Tab A</h2>
+            <Tab label="Profile" value="profile" >
+              <div className="tab-content">
+                <div className="profile-content">
+                  <div className="profile-headline">
+                    <div className="profile-hp">{numberWithCommas(user.points)}</div>
+                    <div className="profile-ranking">{user.ranking}</div>
+                  </div>
+                  <div className="profile-about">
+                    <div className="profile-title">{user.title}</div>
+                    <div className="profile-location">{user.location}</div>
+                    <div className="profile-interest">{user.interest}</div>
+                  </div>
+                </div>
+              </div>
+            </Tab>
+            <Tab label="Recent" value="recent">
+              <div className="tab-content">
+                <h2 style={styles.headline}>Recent Activity</h2>
                 <p>
-                  Tabs are also controllable if you want to programmatically pass them their values.
-                  This allows for more functionality in Tabs such as not
-                  having any Tab selected or assigning them different values.
+                  This is another example of a controllable tab. Remember, if you
+                  use controllable Tabs, you need to give all of your tabs values or else
+                  you wont be able to select them.
                 </p>
               </div>
             </Tab>
-            <Tab label="Tab B" value="b">
-              <div>
-                <h2 style={styles.headline}>Controllable Tab B</h2>
+            <Tab label="Ratings" value="ratings">
+              <div className="tab-content">
+                <h2 style={styles.headline}>Ratings</h2>
                 <p>
                   This is another example of a controllable tab. Remember, if you
                   use controllable Tabs, you need to give all of your tabs values or else
