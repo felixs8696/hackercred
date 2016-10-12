@@ -1,12 +1,7 @@
 @import "_variables";
+@import "_mixins";
 
-@mixin navbar-shadow {
-  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
-  -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
-}
-
-// Dashboard Navbar
+// Dashboard Navbar //////////////////////////////////////////////////////
 .dash_navbar {
   height: 45px;
   width: 100%;
@@ -20,28 +15,95 @@
   line-height: 45px;
   text-align: center;
   vertical-align: middle;
-  font-size: 16px;
 }
 
-// Dashboard Cover
+// Dashboard Cover ///////////////////////////////////////////////////////
 .dash_cover {
   position: relative;
-  height: 350px;
+  height: 450px;
   width: 100%;
   background-color: $main-darkblue;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
 
-  .cover-img {
+  .cover-content {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), no-repeat;
-    background-size: cover;
+    padding: 30px;
+    font-size: $h2-fontsize;
+    letter-spacing: $letter-space;
+
+    .stats-container {
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin-top: 30px;
+      margin-right: 30px;
+
+      .followers,
+      .hacker-points {
+        display: inline-block;
+        color: white;
+        padding: 5px 15px;
+        vertical-align: middle;
+      }
+
+      .hacker-points {
+        background-color: $accent-green;
+        @include border-radius;
+      }
+
+      .followers::after {
+        content: ' Followers'
+      }
+
+      .hacker-points::after {
+        content: ' HP'
+      }
+    }
+
+    .cover-summary {
+      color: white;
+      width: 400px;
+      height: 100%;
+      position: relative;
+      padding-left: 45px;
+
+      .personal-info {
+        line-height: 2rem;
+        position: relative;
+        top: 0;
+
+        .personal-name {
+          @include roboto-font(500);
+          font-size: $h1-fontsize;
+          text-transform: uppercase;
+        }
+      }
+
+      .skill-chips {
+        position: absolute;
+        bottom: 0;
+        font-size: $p-fontsize;
+
+        .skill-chip {
+          border-radius: 30px;
+          border: 1px solid white;
+          padding: 5px 15px;
+          display: inline-block;
+          margin-right: 10px;
+          margin-bottom: 10px;
+        }
+      }
+    }
   }
 }
 
-// Dashboard Content
+// Dashboard Content /////////////////////////////////////////////////////
 .dash_sidebar {
   width: 45px;
   height: 100%;

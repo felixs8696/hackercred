@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Raleway:400,600,700,900|Roboto:300,400,400i,500,700');
+
+@mixin roboto-font($weight) {
+  font-family: 'Roboto', 'Lato', 'Helvetica', 'Arial', sans-serif;
+  font-weight: $weight;
+}
+
+@mixin raleway-font($weight) {
+  font-family: 'Raleway', 'Roboto', 'Lato', 'Helvetica', 'Arial', sans-serif;
+  font-weight: $weight;
+}
+
+@mixin navbar-shadow {
+  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+  -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+}
+
+@mixin border-radius {
+  border-radius: 8px;
+}

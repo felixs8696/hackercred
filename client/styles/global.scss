@@ -1,15 +1,21 @@
 @import '_variables';
+@import '_mixins';
 
 body {
   margin: 0;
-  @include roboto-font(400);
+  @include roboto-font(300);
 }
 
 .title {
   @include raleway-font(600);
-  letter-spacing: .5px;
+  letter-spacing: $letter-space;
+  font-size: 16px;
 }
 
-.heading {
-  @include roboto-font(700);
+.accent-font {
+  @include roboto-font(500);
+}
+
+.normal-font {
+  @include roboto-font(300);
 }
