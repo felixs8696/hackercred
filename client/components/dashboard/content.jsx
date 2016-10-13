@@ -1,5 +1,8 @@
 import React from 'react';
 import {Tabs, Tab} from 'material-ui/Tabs';
+import ActionSearch from 'material-ui/svg-icons/action/search';
+import SocialPersonOutline from 'material-ui/svg-icons/social/person-outline';
+import SocialSchool from 'material-ui/svg-icons/social/school';
 
 const styles = {
   headline: {
@@ -9,6 +12,15 @@ const styles = {
     fontWeight: 400,
   },
 };
+
+const sidebarIconStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  height: "28px",
+  width: "28px"
+}
 
 var image = 'http://fullhdpictures.com/wp-content/uploads/2016/06/Mark-Zuckerberg-HD-Wallpaper.jpg';
 
@@ -87,7 +99,15 @@ export default class Content extends React.Component {
         </div>
         <div className="dash-content">
           <div className="dash-sidebar">
-
+            <div className="sidebar-button">
+              <ActionSearch style = {sidebarIconStyle}/>
+            </div>
+            <div className="sidebar-button">
+              <SocialPersonOutline style = {sidebarIconStyle}/>
+            </div>
+            <div className="sidebar-button">
+              <SocialSchool style = {sidebarIconStyle} />
+            </div>
           </div>
           <Tabs value={this.state.value} onChange={this._handleChange}>
             <Tab label="Profile" value="profile" >
@@ -103,6 +123,56 @@ export default class Content extends React.Component {
                     <div className="profile-interest">{user.interest}</div>
                   </div>
                 </div>
+                <p>
+                  This is another example of a controllable tab. Remember, if you
+                  use controllable Tabs, you need to give all of your tabs values or else
+                  you wont be able to select them.
+                </p><p>
+                  This is another example of a controllable tab. Remember, if you
+                  use controllable Tabs, you need to give all of your tabs values or else
+                  you wont be able to select them.
+                </p><p>
+                  This is another example of a controllable tab. Remember, if you
+                  use controllable Tabs, you need to give all of your tabs values or else
+                  you wont be able to select them.
+                </p><p>
+                  This is another example of a controllable tab. Remember, if you
+                  use controllable Tabs, you need to give all of your tabs values or else
+                  you wont be able to select them.
+                </p>
+                <p>
+                  This is another example of a controllable tab. Remember, if you
+                  use controllable Tabs, you need to give all of your tabs values or else
+                  you wont be able to select them.
+                </p><p>
+                  This is another example of a controllable tab. Remember, if you
+                  use controllable Tabs, you need to give all of your tabs values or else
+                  you wont be able to select them.
+                </p><p>
+                  This is another example of a controllable tab. Remember, if you
+                  use controllable Tabs, you need to give all of your tabs values or else
+                  you wont be able to select them.
+                </p><p>
+                  This is another example of a controllable tab. Remember, if you
+                  use controllable Tabs, you need to give all of your tabs values or else
+                  you wont be able to select them.
+                </p><p>
+                  This is another example of a controllable tab. Remember, if you
+                  use controllable Tabs, you need to give all of your tabs values or else
+                  you wont be able to select them.
+                </p><p>
+                  This is another example of a controllable tab. Remember, if you
+                  use controllable Tabs, you need to give all of your tabs values or else
+                  you wont be able to select them.
+                </p><p>
+                  This is another example of a controllable tab. Remember, if you
+                  use controllable Tabs, you need to give all of your tabs values or else
+                  you wont be able to select them.
+                </p><p>
+                  This is another example of a controllable tab. Remember, if you
+                  use controllable Tabs, you need to give all of your tabs values or else
+                  you wont be able to select them.
+                </p>
               </div>
             </Tab>
             <Tab label="Recent" value="recent">

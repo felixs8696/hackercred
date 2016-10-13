@@ -18,23 +18,19 @@ var appBarTitleStyle = {
   fontWeight: "600"
 }
 
-var appBarIconStyleLeft = {
-  color: "white"
-}
-
 export default class Navbar extends React.Component {
   render() {
     return (
-      // <div className="dash_navbar title">
-      //   Hacker Cred
-      // </div>
-      <AppBar
-        title = "Hacker Cred"
-        style = { appBarStyle }
-        titleStyle = { appBarTitleStyle }
-        iconStyleLeft = { appBarIconStyleLeft }
-        className = "dash_navbar"
-      />
+      <div>
+        <AppBar
+          title = "Hacker Cred"
+          style = { appBarStyle }
+          titleStyle = { appBarTitleStyle }
+          showMenuIconButton = {false}
+          className = "dash_navbar"
+        />
+      <div className="session-button" type="button" value="Start New Session">Start New Session</div>
+      </div>
     )
   }
 }
