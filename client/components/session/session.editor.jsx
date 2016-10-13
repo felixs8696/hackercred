@@ -148,7 +148,7 @@ export default class SessionEditor extends React.Component {
           mode:"java"
       })
     }
-    this._setEditorMode = this._setEditorMode.bind(this);]
+    this._setEditorMode = this._setEditorMode.bind(this);
   }
 
   _setEditorMode(event) {
@@ -159,13 +159,21 @@ export default class SessionEditor extends React.Component {
   }
 
   render() {
-
     return (
-      <div className="editor-container">
-        <select className="editor-dropdown" defaultValue={this.state.editor_mode} onChange={this._setEditorMode} >
-          {editorOptions}
-        </select>
-        <div id="editor" className="editor"></div>
+      <div>
+        <div className="sesh-editor">
+          <div className="editor-container">
+            <select className="editor-dropdown" defaultValue={this.state.editor_mode} onChange={this._setEditorMode} >
+              {editorOptions}
+            </select>
+            <div id="editor" className="editor"></div>
+          </div>
+        </div>
+        <div className="sesh-compiler">
+          <div className="compiler-container">
+
+          </div>
+        </div>
       </div>
     )
   }

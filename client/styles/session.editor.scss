@@ -1,6 +1,7 @@
 @import "_variables";
 @import "_mixins";
 
+// Session Editor ////////////////////////////////////////////////////
 .editor-container {
   width: 100%;
   height: 100%;
@@ -43,4 +44,11 @@
       outline: none;
     }
   }
+}
+
+// Session Compiler ///////////////////////////////////////////////////
+.compiler-container {
+  width: 100%;
+  height: 100%;
+  background: $main-darkblue;
 }

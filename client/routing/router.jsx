@@ -7,7 +7,6 @@ import DashContent from '/client/components/dashboard/dash.content.jsx';
 
 import SessionNavbar from '/client/components/session/session.navbar.jsx';
 import SessionEditor from '/client/components/session/session.editor.jsx';
-import SessionCompiler from '/client/components/session/session.compiler.jsx';
 import SessionVideo from '/client/components/session/session.video.jsx';
 import SessionChat from '/client/components/session/session.chat.jsx';
 
@@ -25,7 +24,6 @@ FlowRouter.route("/:sessionId", {
     mount(Session, {
       sesh_navbar: <SessionNavbar/>,
       sesh_editor: <SessionEditor/>,
-    sesh_compiler: <SessionCompiler/>,
       sesh_video: <SessionVideo/>,
       sesh_chat: <SessionChat/>
     })

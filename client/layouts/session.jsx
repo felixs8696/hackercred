@@ -20,18 +20,13 @@ const muiTheme = getMuiTheme({
   }
 });
 
-export const Session = ({sesh_navbar, sesh_editor, sesh_compiler, sesh_video, sesh_chat}) => (
+export const Session = ({sesh_navbar, sesh_editor, sesh_video, sesh_chat}) => (
   <MuiThemeProvider muiTheme={muiTheme}>
     <div style={{overflow: "hidden"}}>
       {sesh_navbar}
       <div className="sesh-container">
         <div className="sesh-col">
-          <div className="sesh-editor">
-            {sesh_editor}
-          </div>
-          <div className="sesh-compiler">
-            {sesh_compiler}
-          </div>
+          {sesh_editor}
         </div>
         <div className="sesh-col">
           <div className="sesh-video">
