@@ -18,7 +18,16 @@ var appBarTitleStyle = {
   fontWeight: "600"
 }
 
-export default class Navbar extends React.Component {
+export default class DashNavbar extends React.Component {
+  constructor() {
+    super()
+    this.createNewSession = this.createNewSession.bind(this);
+  }
+
+  createNewSession() {
+    FlowRouter.go('/' + ("00000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-5));
+  }
+
   render() {
     return (
       <div>
@@ -29,7 +38,7 @@ export default class Navbar extends React.Component {
           showMenuIconButton = {false}
           className = "dash_navbar"
         />
-      <div className="session-button" type="button" value="Start New Session">Start New Session</div>
+      <div className="session-button" type="button" value="Start New Session" onClick={this.createNewSession}>Start New Session</div>
       </div>
     )
   }

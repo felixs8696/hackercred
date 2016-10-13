@@ -55,7 +55,7 @@ function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-export default class Content extends React.Component {
+export default class DashContent extends React.Component {
   constructor() {
     super()
     this.state = {

@@ -1,0 +1,26 @@
+@import "_variables";
+@import "_mixins";
+
+.sesh-container {
+  display: table;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sesh_col {
+  display: table-cell;
+  outline: 1px solid $border-gray;
+  height: 100%;
+  width: 50%;
+}
+
+.sesh-editor {
+
+}
+
+.sesh-video,
+.sesh-chat {
+  height: 50vh;
+  outline: 1px solid $border-gray;
+}
