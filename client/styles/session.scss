@@ -8,19 +8,23 @@
   overflow: hidden;
 }
 
-.sesh_col {
+.sesh-col {
   display: table-cell;
   outline: 1px solid $border-gray;
   height: 100%;
-  width: 50%;
+  width: calc(50% - 50px);
 }
 
-.sesh-editor {
-
-}
-
+.sesh-editor,
+.sesh-compiler,
 .sesh-video,
 .sesh-chat {
   height: 50vh;
   outline: 1px solid $border-gray;
+}
+
+.sesh-video-sidebar {
+  display: table-cell;
+  width: 100px;
+  background-color: $main-darkgray;
 }

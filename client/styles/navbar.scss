@@ -1,0 +1,35 @@
+@import "_variables";
+@import "_mixins";
+
+.navbar {
+  height: $navbar-height;
+  width: 100%;
+
+  @include navbar-shadow;
+
+  // color: white;
+  // text-transform: uppercase;
+  // font-size: 16px;
+  line-height: $navbar-height;
+  text-align: center;
+  vertical-align: middle;
+
+  position: fixed !important;
+}
+
+.session-button {
+  border-radius: 8px;
+  background-color: #2294E3;
+  color: white;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 11px;
+  z-index: 10000;
+  padding: 5px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  height: 16px;
+  line-height: 16px;
+  text-transform: initial;
+}

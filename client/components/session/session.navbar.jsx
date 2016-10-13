@@ -1,21 +1,16 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
 
-var appBarStyle = {
-  backgroundColor: "#2F2F2F",
-  color: "white"
-}
-
 var appBarTitleStyle = {
+  letterSpacing: ".5px",
+  fontFamily: "'Raleway', 'Roboto', 'Lato', 'Helvetica', 'Arial', sans-serif",
+  fontWeight: "600",
   color: "white",
   textTransform: "uppercase",
-  lineHeight: "45px",
-  textAlign: "center",
-  verticalAlign: "middle",
-  letterSpacing: ".5px",
   fontSize: "16px",
-  fontFamily: "'Raleway', 'Roboto', 'Lato', 'Helvetica', 'Arial', sans-serif",
-  fontWeight: "600"
+  position: "absolute",
+  left: "50%",
+  transform: "translate(-50%)"
 }
 
 export default class SessionNavbar extends React.Component {
@@ -24,11 +19,10 @@ export default class SessionNavbar extends React.Component {
       <div>
         <AppBar
           title = "Hacker Cred"
-          style = { appBarStyle }
-          titleStyle = { appBarTitleStyle }
-          className = "dash_navbar"
-        />
-      <div className="session-button" type="button" value="Share Session">Share Session</div>
+          titleStyle = {appBarTitleStyle}
+          className = "navbar">
+          <div className="session-button" type="button" value="Share Session">Share Session</div>
+        </AppBar>
       </div>
     )
   }

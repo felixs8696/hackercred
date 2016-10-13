@@ -1,37 +1,6 @@
 @import "_variables";
 @import "_mixins";
 
-// Dashboard Navbar //////////////////////////////////////////////////////
-.dash_navbar {
-  height: 45px;
-  width: 100%;
-
-  @include navbar-shadow;
-  background-color: $main-darkgray;
-
-  color: white;
-  text-transform: uppercase;
-
-  line-height: 45px;
-  text-align: center;
-  vertical-align: middle;
-
-  position: fixed !important;
-}
-
-.session-button {
-  border-radius: $border-radius;
-  background-color: $accent-lightblue;
-  color: white;
-  position: fixed;
-  top: 11px;
-  right: 11px;
-  z-index: 10000;
-  padding: $buttonlike-padding;
-  font-size: $p-fontsize;
-  cursor: pointer;
-}
-
 // Dashboard Cover ///////////////////////////////////////////////////////
 .dash_cover {
   position: relative;
