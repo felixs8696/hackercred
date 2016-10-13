@@ -30,7 +30,7 @@ export default class DashNavbar extends React.Component {
           title = "Hacker Cred"
           titleStyle = { appBarTitleStyle }
           showMenuIconButton = {false}
-          className = "navbar">
+          className = "dash_navbar">
           <div className="session-button" type="button" value="Start New Session" onClick={this.createNewSession}>Start New Session</div>
         </AppBar>
       </div>
