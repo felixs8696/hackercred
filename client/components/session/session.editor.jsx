@@ -42,7 +42,7 @@ export default class SessionEditor extends React.Component {
         var hash = CryptoJS.HmacSHA256(date.toString(), "njygq22mravcw5tw");
         var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
         var token = { time_created: date, msg_mac: hashInBase64 };
-        this.setState({repl: new ReplitClient('api.repl.it', '80', 'java', token)});
+        this.setState({repl: new ReplitClient('api.repl.it', '80', 'python', token)});
         // console.log(this.state.repl);
       }.bind(this)).fail(function( result ) {
         console.log( result.statusText );
@@ -55,10 +55,10 @@ export default class SessionEditor extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      editor_mode: "java",
+      editor_mode: "python",
       editor: AceEditor.instance("editor",{
           theme:"tomorrow_night",
-          mode:"java"
+          mode:"python"
       })
     }
     this._setEditorMode = this._setEditorMode.bind(this);
@@ -95,16 +95,16 @@ export default class SessionEditor extends React.Component {
 
   _compileCode() {
     var editor = ace.edit("editor");
-    this.state.repl.evaluate(
-      editor.getValue(),
-       {
-          stdout: function(str) {
-              document.querySelector('.out').innerHTML += str + '\n';
-          }
-       }
+    this.state.repl.evaluate(editor.getValue(),
+      {
+        stdout: function(str) {
+          if (/\S/.test(str)) document.getElementById('compile-output').innerHTML += str + '\n>> ';
+        }
+      }
     ).then(
       function(result) {
-          document.querySelector('.result').innerHTML += (result.error || result.data) + '\n';
+        if (result.data != "None") document.querySelector('.result').innerHTML += (result.error || result.data) + '\n';
+        console.log(result);
       },
       function(err) {
           console.error(err);
@@ -126,8 +126,8 @@ export default class SessionEditor extends React.Component {
         <div className="sesh-compiler">
           <div className="compiler-container">
             <div className="compiler">
-              <pre className="result">results: </pre>
-            	<pre className="out">output: </pre>
+              <pre className="result">Errors: </pre>
+              <pre className="out" id="compile-output">>> </pre>
             </div>
             <button className="compile-button" onClick={this._compileCode}>Compile</button>
           </div>
