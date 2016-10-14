@@ -23,6 +23,15 @@ const editorTypes = [{value:"abap",text:"ABAP"},{value:"abc",text:"ABC"},{value:
                      {value:"vbscript",text:"VBScript"},{value:"velocity",text:"Velocity"},{value:"verilog",text:"Verilog"},{value:"vhdl",text:"VHDL"},{value:"wollok",text:"Wollok"},{value:"xml",text:"XML"},{value:"xquery",text:"XQuery"},
                      {value:"yaml",text:"YAML"},{value:"django",text:"Django"}];
 
+// const editorTypes = [{ace: "python", repl:"python3", text:"Python3"}, {ace: "html_ruby", repl:"ruby", text:"Ruby"}, {ace: "php", repl:"php", text:"PHP"},
+//                         {ace: "java", repl:"java", text:"Java"}, {ace: "golang", repl:"go", text:"Go"}, {ace: "javascript", repl:"nodejs", text:"NodeJS"},
+//                         {ace: "c_cpp", repl:"csharp", text:"C#"}, {ace: "c_cpp", repl:"cpp", text:"C++"}, {ace: "c_cpp", repl:"c", text:"C"}]
+
+const replToAce = {python3: 'python', ruby: 'html_ruby', php: 'php', java: 'java', go: 'golang', nodejs: 'javascript', csharp: 'c_cpp', cpp: 'c_cpp', c: 'c_cpp'}
+
+// var editorOptions = editorTypes.map(function(type) {
+// return ( <option key={type.repl} value={type.repl}>{type.text}</option> );
+// });
 var editorOptions = editorTypes.map(function(type) {
  return ( <option key={type.value} value={type.value}>{type.text}</option> );
 });
