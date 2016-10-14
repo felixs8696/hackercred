@@ -64,6 +64,7 @@ export default class SessionEditor extends React.Component {
     this._setEditorMode = this._setEditorMode.bind(this);
     this._generateCompileToken = this._generateCompileToken.bind(this);
     this._compileCode = this._compileCode.bind(this);
+    this._keyDownCompile = this._keyDownCompile.bind(this);
   }
 
   _setEditorMode(event) {
@@ -93,17 +94,33 @@ export default class SessionEditor extends React.Component {
     );
   }
 
+  _keyDownCompile(event) {
+    if ((event.metaKey || event.ctrlKey) && event.keyCode == 13) {
+      this._compileCode();
+    }
+  }
+
   _compileCode() {
+    var output = {stdout: false, result: false};
     var editor = ace.edit("editor");
     this.state.repl.evaluate(editor.getValue(),
       {
         stdout: function(str) {
-          if (/\S/.test(str)) document.getElementById('compile-output').innerHTML += str + '\n>> ';
+          if (/\S/.test(str)) {
+            document.getElementById('compile-output').innerHTML += str;
+            output.stdout = true;
+          }
+          console.log(str);
         }
       }
     ).then(
       function(result) {
-        if (result.data != "None") document.querySelector('.result').innerHTML += (result.error || result.data) + '\n';
+        if (result.data != "None" || /\S/.test(result.error)) {
+          if (output.stdout) document.getElementById('compile-output').innerHTML += '\n';
+          document.getElementById('compile-output').innerHTML += (result.error || result.data);
+          output.result = true;
+        }
+        if (output.stdout || output.result) document.getElementById('compile-output').innerHTML += '\n>> ';
         console.log(result);
       },
       function(err) {
@@ -120,13 +137,12 @@ export default class SessionEditor extends React.Component {
             <select className="editor-dropdown" defaultValue={this.state.editor_mode} onChange={this._setEditorMode} >
               {editorOptions}
             </select>
-            <div id="editor" className="editor"></div>
+            <div id="editor" className="editor" onKeyDown={this._keyDownCompile}></div>
           </div>
         </div>
         <div className="sesh-compiler">
           <div className="compiler-container">
             <div className="compiler">
-              <pre className="result">Errors: </pre>
               <pre className="out" id="compile-output">>> </pre>
             </div>
             <button className="compile-button" onClick={this._compileCode}>Compile</button>

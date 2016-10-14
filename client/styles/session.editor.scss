@@ -53,12 +53,13 @@
   position: relative;
 
   .compiler {
-    width: 100%;
+    width: calc(100% - 2 * #{$padding-amount});
     height: 100%;
     background: $main-darkblue;
     padding: $padding-amount;
     position: absolute;
     color: white;
+    overflow-y: auto;
   }
 
   .compile-button {
