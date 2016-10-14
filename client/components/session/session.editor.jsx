@@ -32,9 +32,6 @@ const replToAce = {python3: 'python', ruby: 'html_ruby', php: 'php', java: 'java
 var editorOptions = editorTypes.map(function(type) {
 return ( <option key={type.repl} value={type.repl}>{type.text}</option> );
 });
-// var editorOptions = editorTypes.map(function(type) {
-//  return ( <option key={type.value} value={type.value}>{type.text}</option> );
-// });
 
 export default class SessionEditor extends React.Component {
   componentWillMount() {
