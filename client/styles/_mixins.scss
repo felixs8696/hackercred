@@ -20,3 +20,14 @@
   -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
 }
+
+@mixin basic-button-style {
+  color: $medium-gray;
+  border: .5px solid $main-darkgray;
+  border-radius: $border-radius;
+  padding: $buttonlike-padding;
+  cursor: pointer;
+  background: transparent;
+  @include roboto-font(400);
+  letter-spacing: $letter-space;
+}
