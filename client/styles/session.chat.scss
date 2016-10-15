@@ -1,6 +1,14 @@
 @import "_variables";
 @import "_mixins";
 
+textarea::-webkit-scrollbar {
+    width: 5px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: $medium-gray;
+}
+
 .chat-container {
   width: 100%;
   height: 100%;

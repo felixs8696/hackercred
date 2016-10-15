@@ -19,3 +19,12 @@ body {
 .normal-font {
   @include roboto-font(300);
 }
+
+textarea::-webkit-scrollbar {
+    width: 5px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: $medium-gray;
+  // outline: 1px solid slategrey;
+}
