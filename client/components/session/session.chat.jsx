@@ -6,7 +6,9 @@ export default class SessionChat extends React.Component {
       <div className="chat-container">
         <div className="reply-box">
           <div className="attachment-button"></div>
-          <div className="reply-input"></div>
+          <div className="reply-input">
+            <textarea placeholder="Type here to reply..."></textarea>
+          </div>
         </div>
       </div>
     )
