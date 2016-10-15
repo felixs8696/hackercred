@@ -110,11 +110,13 @@ export default class SessionEditor extends React.Component {
   _compileCode() {
     var output = {stdout: false, result: false};
     var editor = ace.edit("editor");
+    var out = document.getElementById('compile-output');
+    var compiler = document.getElementById('compiler');
     this.state.repl.evaluate(editor.getValue(),
       {
         stdout: function(str) {
           if (/\S/.test(str)) {
-            document.getElementById('compile-output').innerHTML += str;
+            out.innerHTML += str;
             output.stdout = true;
           }
           console.log(str);
@@ -123,11 +125,12 @@ export default class SessionEditor extends React.Component {
     ).then(
       function(result) {
         if (result.data != "None" || /\S/.test(result.error)) {
-          if (output.stdout) document.getElementById('compile-output').innerHTML += '\n';
-          document.getElementById('compile-output').innerHTML += (result.error || result.data);
+          if (output.stdout) out.innerHTML += '\n';
+          out.innerHTML += (result.error || result.data);
           output.result = true;
         }
-        if (output.stdout || output.result) document.getElementById('compile-output').innerHTML += '\n>> ';
+        if (output.stdout || output.result) out.innerHTML += '\n>> ';
+        compiler.scrollTop = compiler.scrollHeight;
         console.log(result);
       },
       function(err) {
@@ -149,7 +152,7 @@ export default class SessionEditor extends React.Component {
         </div>
         <div className="sesh-compiler">
           <div className="compiler-container">
-            <div className="compiler">
+            <div className="compiler" id="compiler">
               <pre className="out" id="compile-output">>> </pre>
             </div>
             <button className="compile-button" onClick={this._compileCode}>Compile</button>

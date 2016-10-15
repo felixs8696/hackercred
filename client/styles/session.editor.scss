@@ -60,6 +60,10 @@
     position: absolute;
     color: white;
     overflow-y: auto;
+
+    .out {
+      padding-bottom: 50px;
+    }
   }
 
   .compile-button {
