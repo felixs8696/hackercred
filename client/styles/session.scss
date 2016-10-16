@@ -9,7 +9,7 @@
 
   .sesh-col {
     display: table-cell;
-    outline: 1px solid $border-gray;
+    // outline: 1px solid $border-gray;
     height: calc(100% - #{$navbar-height});
     width: calc(50% - 50px);
     overflow: hidden;
