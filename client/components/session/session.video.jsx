@@ -29,15 +29,14 @@ export default class SessionVideo extends React.Component {
     }
 
     function handleError(error) {
+      errorMsg('Error: ' + error.name, error);
       if (error.name === 'ConstraintNotSatisfiedError') {
         errorMsg('The resolution ' + constraints.video.width.exact + 'x' +
             constraints.video.width.exact + ' px is not supported by your device.');
       } else if (error.name === 'PermissionDeniedError') {
         errorMsg('Permissions have not been granted to use your camera and ' +
-          'microphone, you need to allow the page access to your devices in ' +
-          'order for the demo to work.');
+          'microphone. Please allow the page access to your devices.');
       }
-      errorMsg('getUserMedia error: ' + error.name, error);
     }
 
     function errorMsg(msg, error) {
