@@ -20,7 +20,7 @@ textarea::-webkit-scrollbar-thumb {
     bottom: 0;
     width: 100%;
     height: $navbar-height;
-    border: 1px solid $border-gray;
+    // border: 1px solid $border-gray;
     background: white;
     @include chat-input-shadow;
 
@@ -29,6 +29,8 @@ textarea::-webkit-scrollbar-thumb {
       width: $navbar-height;
       float: left;
       background: $border-gray;
+      position: relative;
+      cursor: pointer;
     }
 
     .reply-input {
@@ -46,6 +48,104 @@ textarea::-webkit-scrollbar-thumb {
         border: 0;
         outline: 0;
         resize: none;
+      }
+    }
+  }
+
+  .chat-message-container {
+    position: absolute;
+    width: calc(100% - (2 * #{$padding-amount}));
+    height: calc(100% - (2 * #{$padding-amount}) - #{$navbar-height});
+    overflow-y: auto;
+    padding: $padding-amount;
+
+    .message-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 10px;
+
+      .message-bubble {
+        @include message-bubble-shadow;
+        position: relative;
+        max-width: $message-width;
+
+        .message-bar {
+          position: absolute;
+          height: 100%;
+        }
+
+        .message-text {
+          @include roboto-font(300);
+          color: $font-gray;
+          padding: 10px;
+          font-size: $small-fontsize;
+          line-height: $chat-lineheight;
+        }
+      }
+
+      .message-preview-container {
+        position: relative;
+        width: 30%;
+        float: right;
+      }
+    }
+
+    .message-container.left {
+
+      .message-bubble {
+        display: inline-block;
+
+        .message-bar {
+          width: $navbar-height;
+          background-color: $accent-red;
+          min-height: $navbar-height;
+
+          .message-picture {
+            width: $navbar-height;
+            height: $navbar-height;
+            background-repeat: no-repeat !important;
+            background-size: cover !important;
+          }
+        }
+
+        .message-text {
+          margin-left: $navbar-height;
+          width: calc(100% - #{$navbar-height} - 20px);
+        }
+      }
+
+
+      .message-preview-container {
+
+        .message-preview {
+
+        }
+      }
+    }
+
+    .message-container.right {
+      display: flex;
+      justify-content: flex-end;
+
+      .message-bubble {
+
+        .message-bar {
+          right: 0;
+          width: $chatbar-width;
+          background-color: $accent-lightblue;
+        }
+
+        .message-text {
+          margin-right: $chatbar-width;
+          width: calc(100% - $chatbar-width - 20px);
+        }
+      }
+
+      .message-preview-container {
+
+        .message-preview {
+
+        }
       }
     }
   }

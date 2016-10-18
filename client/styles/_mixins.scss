@@ -37,3 +37,13 @@
   @include roboto-font(400);
   letter-spacing: $letter-space;
 }
+
+@mixin message-bubble-shadow {
+  @include box-shadow(0px, 0px, 10px, 0px, rgba(0,0,0,0.15));
+}
+
+@mixin box-shadow($horizontal, $vertical, $blur, $spread, $color) {
+  -webkit-box-shadow: $horizontal $vertical $blur $spread $color;
+  -moz-box-shadow: $horizontal $vertical $blur $spread $color;
+  box-shadow: $horizontal $vertical $blur $spread $color;
+}
