@@ -40,21 +40,35 @@
     right: 0;
     height: 100%;
     z-index: 100;
-    overflow: hidden;
+    overflow-y: scroll;
 
     .video-thumbnail {
       display: block;
       width: 100%;
       height: 75px;
       position: relative;
+      cursor: pointer;
+
+      .video-user-picture,
+      .video-user-initial {
+        display: block;
+        height: $video-sidebar-width / 2;
+        width: $video-sidebar-width / 2;
+        @include absolute-center;
+      }
 
       .video-user-picture {
-        display: block;
         border-radius: 50%;
-        height: 50px;
-        width: 50px;
-        @include absolute-center;
         @include background-picture-attachment;
+      }
+
+      .video-user-initial {
+        text-align: center;
+        vertical-align: middle;
+        line-height: $video-sidebar-width / 2;
+        color: white;
+        @include roboto-font(700);
+        background: transparent;
       }
     }
   }
