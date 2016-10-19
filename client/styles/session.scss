@@ -2,16 +2,15 @@
 @import "_mixins";
 
 .sesh-container {
-  display: table;
   width: 100%;
   height: calc(100% - #{$navbar-height});
   overflow: hidden;
+  position: fixed;
 
   .sesh-col {
-    display: table-cell;
-    // outline: 1px solid $border-gray;
-    height: calc(100% - #{$navbar-height});
-    width: calc(50% - 50px);
+    display: inline-block;
+    height: 100%;
+    width: calc(50% - (#{$video-sidebar-width} / 2));
     overflow: hidden;
 
     .sesh-editor,
@@ -22,10 +21,4 @@
       outline: 1px solid $border-gray;
     }
   }
-}
-
-.sesh-video-sidebar {
-  display: table-cell;
-  width: 100px;
-  background-color: $main-darkgray;
 }

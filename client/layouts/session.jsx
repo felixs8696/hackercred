@@ -36,8 +36,6 @@ export const Session = ({sesh_navbar, sesh_editor, sesh_video, sesh_chat}) => (
             {sesh_chat}
           </div>
         </div>
-        <div className="sesh-video-sidebar">
-        </div>
       </div>
     </div>
   </MuiThemeProvider>
