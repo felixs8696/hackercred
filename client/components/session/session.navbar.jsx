@@ -18,7 +18,7 @@ export default class SessionNavbar extends React.Component {
     return (
       <div>
         <AppBar
-          title = "Hacker Cred"
+          title = "Hacker Pad"
           style = {{position: "relative !important"}}
           titleStyle = {appBarTitleStyle}
           className = "sesh_navbar">
