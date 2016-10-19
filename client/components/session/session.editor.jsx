@@ -1,4 +1,6 @@
 import React from 'react';
+import ReplitClient from 'replit-client';
+import {CryptoJS} from '/client/scripts/cryptojs/hmac-sha256.js';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -35,43 +37,21 @@ return ( <option key={type.repl} value={type.repl}>{type.text}</option> );
 });
 
 export default class SessionEditor extends React.Component {
-  componentWillMount() {
-    $.getScript( "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/hmac-sha256.js" )
-    .done(function( s, Status ) {
-      this.replRequest = $.when(
-        $.getScript("https://repl.it/lib/api.js"),
-        $.getScript( "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/enc-base64-min.js" ),
-        $.Deferred(function( deferred ){
-          $( deferred.resolve );
-        })
-      ).done(function( s1, s2, s3){
-        var date = (new Date()).getTime();
-        var hash = CryptoJS.HmacSHA256(date.toString(), "njygq22mravcw5tw");
-        var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
-        var token = { time_created: date, msg_mac: hashInBase64 };
-        this.setState({repl: new ReplitClient('api.repl.it', '80', 'python3', token)});
-        // console.log(this.state.repl);
-      }.bind(this)).fail(function( result ) {
-        console.log( result.statusText );
-      });
-    }.bind(this)).fail(function( jqxhr, settings, exception ) {
-      console.warn( "Something went wrong " + exception );
-    });
-  }
-
   constructor(props) {
     super(props)
+    this._setEditorMode = this._setEditorMode.bind(this);
+    this._generateCompileToken = this._generateCompileToken.bind(this);
+    this._compileCode = this._compileCode.bind(this);
+    this._keyDownCompile = this._keyDownCompile.bind(this);
+
     this.state = {
       editor_mode: "python3",
       editor: AceEditor.instance("editor",{
           theme:"tomorrow_night",
           mode:"python"
-      })
+      }),
+      repl: new ReplitClient('api.repl.it', '80', 'python3', this._generateCompileToken())
     }
-    this._setEditorMode = this._setEditorMode.bind(this);
-    this._generateCompileToken = this._generateCompileToken.bind(this);
-    this._compileCode = this._compileCode.bind(this);
-    this._keyDownCompile = this._keyDownCompile.bind(this);
   }
 
   _setEditorMode(event) {
