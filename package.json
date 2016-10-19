@@ -10,7 +10,8 @@
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-mounter": "^1.2.0",
-    "react-tap-event-plugin": "^1.0.0"
+    "react-tap-event-plugin": "^1.0.0",
+    "replit-client": "^0.6.2"
   },
   "version": "1.0.0",
   "main": "index.js",
