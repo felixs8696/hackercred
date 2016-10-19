@@ -120,7 +120,7 @@ export default class SessionEditor extends React.Component {
       {
         stdout: function(str) {
           if (/\S/.test(str)) {
-            out.innerHTML += str;
+            out.innerHTML += str + '\n';
             output.stdout = true;
           }
           console.log(str);
