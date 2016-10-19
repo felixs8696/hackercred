@@ -20,7 +20,6 @@ textarea::-webkit-scrollbar-thumb {
     bottom: 0;
     width: 100%;
     height: $navbar-height;
-    // border: 1px solid $border-gray;
     background: white;
     @include chat-input-shadow;
 
