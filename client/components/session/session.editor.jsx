@@ -1,6 +1,7 @@
 import React from 'react';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
+import CircularProgress from 'material-ui/CircularProgress';
 
 // const aceEditorTypes = [{value:"abap",text:"ABAP"},{value:"abc",text:"ABC"},{value:"actionscript",text:"ActionScript"},{value:"ada",text:"ADA"},{value:"apache_conf",text:"Apache Conf"},{value:"asciidoc",text:"AsciiDoc"},
 //                      {value:"assembly_x86",text:"Assembly x86"},{value:"autohotkey",text:"AutoHotKey"},{value:"batchfile",text:"BatchFile"},{value:"c_cpp",text:"C and C++"},{value:"c9search",text:"C9Search"},
@@ -48,7 +49,7 @@ export default class SessionEditor extends React.Component {
         var hash = CryptoJS.HmacSHA256(date.toString(), "njygq22mravcw5tw");
         var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
         var token = { time_created: date, msg_mac: hashInBase64 };
-        this.setState({repl: new ReplitClient('api.repl.it', '80', 'python', token)});
+        this.setState({repl: new ReplitClient('api.repl.it', '80', 'python3', token)});
         // console.log(this.state.repl);
       }.bind(this)).fail(function( result ) {
         console.log( result.statusText );
@@ -112,6 +113,9 @@ export default class SessionEditor extends React.Component {
     var editor = ace.edit("editor");
     var out = document.getElementById('compile-output');
     var compiler = document.getElementById('compiler');
+    var loading = document.getElementById('compile-status');
+
+    loading.style.display = 'inline-block';
     this.state.repl.evaluate(editor.getValue(),
       {
         stdout: function(str) {
@@ -132,9 +136,11 @@ export default class SessionEditor extends React.Component {
         if (output.stdout || output.result) out.innerHTML += '\n>> ';
         compiler.scrollTop = compiler.scrollHeight;
         console.log(result);
+        loading.style.display = 'none';
       },
       function(err) {
           console.error(err);
+          loading.style.display = 'none';
       }
     );
   }
@@ -155,7 +161,10 @@ export default class SessionEditor extends React.Component {
             <div className="compiler" id="compiler">
               <pre className="out" id="compile-output">>> </pre>
             </div>
-            <button className="compile-button" onClick={this._compileCode}>Compile</button>
+            <div className="compile-options">
+              <CircularProgress id="compile-status" style={{display: 'none'}} color="#505050" className="loading-spinner" size={15} thickness={2} />
+              <button id="compile-button" className="compile-button" onClick={this._compileCode}>Compile ( &#8984; + Enter )</button>
+            </div>
           </div>
         </div>
       </div>
