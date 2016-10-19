@@ -52,7 +52,7 @@ export default class SessionVideo extends React.Component {
   render() {
     return (
       <div className="video-container">
-        <video className="video" id="video"></video>
+        <video className="video" id="video" autoPlay></video>
         <div className="error-message" id="error"></div>
       </div>
     )
