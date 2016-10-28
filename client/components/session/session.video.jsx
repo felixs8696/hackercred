@@ -94,8 +94,17 @@ export default class SessionVideo extends React.Component {
           }
         }
       }
+      this._videos = this._videos.bind(this);
       this._videoThumbnails = this._videoThumbnails.bind(this);
       this._changeVideo = this._changeVideo.bind(this);
+  }
+
+  _videos() {
+    return Object.keys(this.state.users).map((key, index) => {
+      var display = {display: 'block'};
+      if (key == this.state.currentVideo) display = {display: 'none'};
+      return (<video key={'video-' + key} className="video" id={'video-' + key} value={'video-' + key} style={display} autoPlay></video>);
+    });
   }
 
   _videoThumbnails() {
@@ -114,6 +123,7 @@ export default class SessionVideo extends React.Component {
 
   _changeVideo(event) {
     var previous = document.getElementById(this.state.currentVideo);
+    console.log(previous);
     replaceChildNode(previous, "div", "video-user-picture", { background: 'url(' + this.state.users[this.state.currentVideo].image + ')', border: '3px solid ' + this.state.users[this.state.currentVideo].color });
     var id = event.currentTarget.getAttribute("value");
     replaceChildNode(event.currentTarget, "div", "video-user-initial", null, this.state.users[id].firstname[0]);
@@ -123,9 +133,11 @@ export default class SessionVideo extends React.Component {
 
   render() {
     return (
-      <div className="video-container">
-        <video className="video" id="video" autoPlay></video>
-        <div className="error-message" id="error"></div>
+      <div className="video-session">
+        <div className="video-container">
+          {this._videos()}
+          <div className="error-message" id="error"></div>
+        </div>
         <div className="sesh-video-sidebar">
           {this._videoThumbnails()}
         </div>

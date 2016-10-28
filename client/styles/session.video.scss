@@ -1,35 +1,41 @@
 @import "_variables";
 @import "_mixins";
 
-.video-container {
-  width: 100%;
+.video-session {
   height: 100%;
-  background: black;
-  position: relative;
-  overflow: hidden;
+  width: 100%;
+  display: flex;
 
-  .video-buttons {
-      position: absolute;
-  }
-  .video {
-    position: absolute;
+  .video-container {
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 50%;
-    right: 0;
-    bottom: 0;
-    transform: translateX(-50%);
-  }
+    background: black;
+    position: relative;
+    overflow: hidden;
 
-  .error-message {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: $padding-amount;
-    color: white;
+    .video-buttons {
+        position: absolute;
+    }
+    .video {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 50%;
+      right: 0;
+      bottom: 0;
+      transform: translateX(-50%);
+    }
+
+    .error-message {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: $padding-amount;
+      color: white;
+    }
   }
 
   .sesh-video-sidebar {
@@ -72,4 +78,5 @@
       }
     }
   }
+
 }
