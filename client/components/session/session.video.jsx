@@ -28,6 +28,26 @@ var replaceChildNode = function(node, type, className, style, text) {
 
 export default class SessionVideo extends React.Component {
   componentDidMount() {
+    this.state.peer.on('open', () => { console.log('Peer: ' + this.state.peer.id) });
+
+    this.state.peer.on('call', (incomingCall) => {
+      this.setState({ currentCall: incomingCall });
+      var newUserId = '094f129e012c92123ng923va';
+      var newUserObj = {
+        firstname: 'Mark',
+        lastname: 'Zuckerberg',
+        image: 'http://blogs.timesofindia.indiatimes.com/wp-content/uploads/2015/12/mark-zuckerberg.jpg'
+      }
+      this.state.users[newUserId] = newUserObj;
+      incomingCall.answer(this.state.localStream);
+      incomingCall.on('stream', (remoteStream) => {
+        this.setState({ remoteStream: remoteStream })
+        var video = document.getElementById(newUserId);
+        console.log(video);
+        video.src = URL.createObjectURL(remoteStream);
+      });
+    });
+
     var errorElement = document.querySelector('#error');
     var video = document.querySelector('video');
 
@@ -92,7 +112,15 @@ export default class SessionVideo extends React.Component {
             lastname: 'Zuckerberg',
             image: 'http://blogs.timesofindia.indiatimes.com/wp-content/uploads/2015/12/mark-zuckerberg.jpg'
           }
-        }
+        },
+        peer: new Peer({
+          key: '3rzxypo1rwq7u8fr',
+          debug: 3,
+          config: {'iceServers': [
+            { url: 'stun:stun.l.google.com:19302' },
+            { url: 'stun:stun1.l.google.com:19302' },
+          ]}
+        })
       }
       this._videos = this._videos.bind(this);
       this._videoThumbnails = this._videoThumbnails.bind(this);
