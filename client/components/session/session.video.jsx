@@ -97,34 +97,35 @@ export default class SessionVideo extends React.Component {
   }
 
   constructor(props) {
-      super(props);
-      this.state = {
-        currentUserId: '094f129e012c92123ng923va',
-        currentVideo: '094f129e012c92123ng923va',
-        users: {
-          '507f191e810c19729de860ea': {
-            firstname: 'Bill',
-            lastname: 'Gates',
-            image: 'https://pbs.twimg.com/profile_images/558109954561679360/j1f9DiJi.jpeg'
-          },
-          '094f129e012c92123ng923va': {
-            firstname: 'Mark',
-            lastname: 'Zuckerberg',
-            image: 'http://blogs.timesofindia.indiatimes.com/wp-content/uploads/2015/12/mark-zuckerberg.jpg'
-          }
+    super(props);
+    this.state = {
+      data: this.props.session.video,
+      currentUserId: '094f129e012c92123ng923va',
+      currentVideo: '094f129e012c92123ng923va',
+      users: {
+        '507f191e810c19729de860ea': {
+          firstname: 'Bill',
+          lastname: 'Gates',
+          image: 'https://pbs.twimg.com/profile_images/558109954561679360/j1f9DiJi.jpeg'
         },
-        peer: new Peer({
-          key: '3rzxypo1rwq7u8fr',
-          debug: 3,
-          config: {'iceServers': [
-            { url: 'stun:stun.l.google.com:19302' },
-            { url: 'stun:stun1.l.google.com:19302' },
-          ]}
-        })
-      }
-      this._videos = this._videos.bind(this);
-      this._videoThumbnails = this._videoThumbnails.bind(this);
-      this._changeVideo = this._changeVideo.bind(this);
+        '094f129e012c92123ng923va': {
+          firstname: 'Mark',
+          lastname: 'Zuckerberg',
+          image: 'http://blogs.timesofindia.indiatimes.com/wp-content/uploads/2015/12/mark-zuckerberg.jpg'
+        }
+      },
+      peer: new Peer({
+        key: '3rzxypo1rwq7u8fr',
+        debug: 3,
+        config: {'iceServers': [
+          { url: 'stun:stun.l.google.com:19302' },
+          { url: 'stun:stun1.l.google.com:19302' },
+        ]}
+      })
+    }
+    this._videos = this._videos.bind(this);
+    this._videoThumbnails = this._videoThumbnails.bind(this);
+    this._changeVideo = this._changeVideo.bind(this);
   }
 
   _videos() {

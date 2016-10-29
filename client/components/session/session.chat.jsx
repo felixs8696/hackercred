@@ -17,9 +17,10 @@ export default class SessionChat extends React.Component {
     this.setState({msgBox: document.getElementById('msgBox')});
   }
 
-  constructor(props) {
+  constructor(props, data) {
     super(props);
     this.state = {
+      data: this.props.session.chat,
       text: '',
       currentUserId: '094f129e012c92123ng923va',
       users: {
