@@ -37,7 +37,7 @@ return ( <option key={type.repl} value={type.repl}>{type.text}</option> );
 });
 
 export default class SessionEditor extends React.Component {
-  constructor(props, data) {
+  constructor(props) {
     super(props);
     this._setEditorMode = this._setEditorMode.bind(this);
     this._generateCompileToken = this._generateCompileToken.bind(this);
