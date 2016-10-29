@@ -37,14 +37,15 @@ return ( <option key={type.repl} value={type.repl}>{type.text}</option> );
 });
 
 export default class SessionEditor extends React.Component {
-  constructor(props) {
-    super(props)
+  constructor(props, data) {
+    super(props);
     this._setEditorMode = this._setEditorMode.bind(this);
     this._generateCompileToken = this._generateCompileToken.bind(this);
     this._compileCode = this._compileCode.bind(this);
     this._keyDownCompile = this._keyDownCompile.bind(this);
 
     this.state = {
+      data: this.props.session.editor,
       editor_mode: "python3",
       editor: AceEditor.instance("editor",{
           theme:"tomorrow_night",

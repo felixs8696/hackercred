@@ -10,6 +10,10 @@ import SessionEditor from '/client/components/session/session.editor.jsx';
 import SessionVideo from '/client/components/session/session.video.jsx';
 import SessionChat from '/client/components/session/session.chat.jsx';
 
+import SessionChatContainer from '/client/containers/session.chat.js';
+import SessionEditorContainer from '/client/containers/session.editor.js';
+import SessionVideoContainer from '/client/containers/session.video.js';
+
 FlowRouter.route("/", {
   action (){
     mount(Dashboard, {
@@ -23,9 +27,9 @@ FlowRouter.route("/:sessionId", {
   action (){
     mount(Session, {
       sesh_navbar: <SessionNavbar/>,
-      sesh_editor: <SessionEditor/>,
-      sesh_video: <SessionVideo/>,
-      sesh_chat: <SessionChat/>
+      sesh_editor: <SessionEditorContainer/>,
+      sesh_video: <SessionVideoContainer/>,
+      sesh_chat: <SessionChatContainer/>
     })
   }
 });
