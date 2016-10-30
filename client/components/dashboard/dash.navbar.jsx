@@ -1,5 +1,7 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
+import { Sessions } from '/collections/sessions';
+import { updateSessions } from '/lib/methods/sessions';
 
 var appBarTitleStyle = {
   letterSpacing: ".5px",
@@ -20,7 +22,14 @@ export default class DashNavbar extends React.Component {
   }
 
   createNewSession() {
-    FlowRouter.go('/' + ("00000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-5));
+    updateSessions.call([], (err, res) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('New Session: ' + res);
+        FlowRouter.go('/' + res);
+      }
+    });
   }
 
   render() {
