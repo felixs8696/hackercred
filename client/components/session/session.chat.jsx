@@ -1,4 +1,6 @@
 import React from 'react';
+import { FlowRouter } from 'meteor/kadira:flow-router';
+import { updateChat } from '/lib/methods/chat';
 import AttachFile from 'material-ui/svg-icons/editor/attach-file';
 
 const sidebarIconStyle = {
@@ -13,40 +15,17 @@ const sidebarIconStyle = {
 //TODO: Replace with Database collections and data
 
 export default class SessionChat extends React.Component {
+  componentWillMount() {
+    this.setState({id: FlowRouter.getParam('sessionId')});
+  }
+
   componentDidMount() {
     this.setState({msgBox: document.getElementById('msgBox')});
   }
 
   constructor(props) {
     super(props);
-    this.state = {
-      data: this.props.session.chat,
-      text: '',
-      currentUserId: '094f129e012c92123ng923va',
-      users: {
-        '507f191e810c19729de860ea': {
-          firstname: 'Bill',
-          lastname: 'Gates',
-          image: 'https://pbs.twimg.com/profile_images/558109954561679360/j1f9DiJi.jpeg'
-        },
-        '094f129e012c92123ng923va': {
-          firstname: 'Mark',
-          lastname: 'Zuckerberg',
-          image: 'http://blogs.timesofindia.indiatimes.com/wp-content/uploads/2015/12/mark-zuckerberg.jpg'
-        }
-      },
-      messages: [{
-          from: '507f191e810c19729de860ea',
-          content: 'Here’s some documentation I wrote up about expectimax trees and probablistic modeling if you want some notes to follow along.',
-          time_created: new Date(2016, 9, 18, 8, 30, 55, 0)
-        },
-        {
-          from: '094f129e012c92123ng923va',
-          content: 'In lecture Professor Hug also gave some tips about the difference between a reflex agent and a look ahead agent. Here’s the video.',
-          time_created: new Date(2016, 9, 18, 8, 32, 15, 0)
-        }
-      ]
-    }
+    this.state = this.props.session.chat;
 
     this._sendMessage = this._sendMessage.bind(this);
     this._handleChange = this._handleChange.bind(this);
@@ -61,7 +40,15 @@ export default class SessionChat extends React.Component {
         content: this.state.text,
         time_created: new Date()
       }
-      this.state.messages.push(message);
+      updateChat.call({sessionId: this.state.id, msg: message}, (err, res) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(res);
+          this.setState({messages: this.props.session.chat.messages});
+          console.log(this.state);
+        }
+      });
       this.setState({text: ''});
       this.state.msgBox.scrollTop = this.state.msgBox.scrollHeight;
       return true;
