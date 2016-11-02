@@ -1,7 +1,25 @@
 import React from 'react';
 import { Accounts } from 'meteor/accounts-base';
+import { FlowRouter } from 'meteor/kadira:flow-router';
+
+function enterSite(sessionId) {
+  console.log(sessionId);
+  if (!sessionId || sessionId.length == 0) {
+    FlowRouter.go("/");
+  } else {
+    FlowRouter.go("/" + sessionId);
+  }
+}
 
 class LoginForm extends React.Component {
+  componentWillMount() {
+    this.setState({id: FlowRouter.getParam('sessionId')});
+  }
+
+  componentDidMount() {
+    console.log('form');
+  }
+
   constructor(props) {
     super(props);
     console.log(props);
@@ -38,11 +56,10 @@ class LoginForm extends React.Component {
 
   _handleSubmit(event) {
     event.preventDefault();
+    var email = document.getElementById("loginEmail").value;
+    var password = document.getElementById("loginPassword").value;
 
     if (this.state.form == "login") {
-      var email = document.getElementById("loginEmail").value;
-      var password = document.getElementById("loginPassword").value;
-
       if ((email && email.length > 0) && (password && password.length > 0)) {
         Meteor.loginWithPassword(email.trim(), password.trim(), (error) => {
           if (error) {
@@ -50,8 +67,10 @@ class LoginForm extends React.Component {
             this.setState({error: "Error: " + error.reason});
             return false;
           } else {
-            console.log("Logged In: " + Meteor.userId());
-            this.props.updateMeteorId(Meteor.userId());
+            const userId = Meteor.userId();
+            console.log("Logged In: " + userId);
+            this.props.updateMeteorId(userId);
+            enterSite(this.state.id);
             return true;
           }
         });
@@ -62,19 +81,23 @@ class LoginForm extends React.Component {
     }
 
     if (this.state.form == "register") {
-      var email = document.getElementById("loginEmail").value;
-      var password = document.getElementById("loginPassword").value;
       var confirmPassword = document.getElementById("confirmPassword").value;
+      var first = document.getElementById("firstName").value;
+      var last = document.getElementById("lastName").value;
+      var imageUrl = document.getElementById("imageUrl").value;
+      var userObj = { firstname: first, lastname: last, image: imageUrl };
 
       if (password === confirmPassword) {
-        Accounts.createUser({email: email.trim(), password: password.trim()}, (error) => {
+        Accounts.createUser({email: email.trim(), password: password.trim(), profile: userObj}, (error) => {
           if (error) {
             console.log(error);
             this.setState({error: "Error: " + error.reason});
             return false;
           } else {
-            console.log("Logged In: " + Meteor.userId());
-            this.props.updateMeteorId(Meteor.userId());
+            const userId = Meteor.userId();
+            console.log("Logged In: " + userId);
+            this.props.updateMeteorId(userId);
+            enterSite(this.state.id);
             return true;
           }
         });
@@ -86,6 +109,7 @@ class LoginForm extends React.Component {
   }
 
   render() {
+    console.log('renders');
     return (
       <div className="login-container">
         <form className="login-form" id="login-form" onSubmit={ this._handleSubmit.bind(this) } >
@@ -93,6 +117,9 @@ class LoginForm extends React.Component {
           <p className="form-title" id="register-button" onClick={ this._changeForm.bind(this) } value="register">Register</p>
           <p className="error-msg">{this.state.error}</p>
           <div className="login-content">
+            { this.state.form == "register" ? <input type="text" id="firstName" placeholder="First Name"/> : null }
+            { this.state.form == "register" ? <input type="text" id="lastName" placeholder="Last Name"/> : null }
+            { this.state.form == "register" ? <input type="text" id="imageUrl" placeholder="Image URL"/> : null }
             <input type="email" id="loginEmail" placeholder="Email"/>
             <input type="password" id="loginPassword"  placeholder="Password"/>
             { this.state.form == "register" ? <input type="password" id="confirmPassword"  placeholder="Confirm Password"/> : null }
@@ -107,7 +134,7 @@ class LoginForm extends React.Component {
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
+
     this.state = {
       user: this.props.user,
       userId: Meteor.userId()

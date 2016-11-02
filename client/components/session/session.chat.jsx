@@ -15,10 +15,6 @@ const sidebarIconStyle = {
 //TODO: Replace with Database collections and data
 
 export default class SessionChat extends React.Component {
-  componentWillMount() {
-    this.setState({id: FlowRouter.getParam('sessionId')});
-  }
-
   componentDidMount() {
     this.setState({msgBox: document.getElementById('msgBox')});
   }
@@ -26,6 +22,7 @@ export default class SessionChat extends React.Component {
   constructor(props) {
     super(props);
     this.state = this.props.session.chat;
+    this.state.users = this.props.session.users;
 
     this._sendMessage = this._sendMessage.bind(this);
     this._handleChange = this._handleChange.bind(this);

@@ -1,4 +1,5 @@
 import React from 'react';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 import {
   cyan500, cyan700,
   pinkA200,
@@ -30,14 +31,20 @@ const muiTheme = getMuiTheme({
   }
 });
 
-export const Dashboard = ({dash_navbar, dash_content, login}) => (
-  <MuiThemeProvider muiTheme={muiTheme}>
-    <div>
-      {dash_navbar}
-      <div className="container">
-        {dash_content}
-      </div>
-      {login}
-    </div>
-  </MuiThemeProvider>
-);
+export class Dashboard extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <MuiThemeProvider muiTheme={muiTheme}>
+        <div>
+          {this.props.dash_navbar}
+          <div className="container">
+            {this.props.dash_content}
+          </div>
+        </div>
+      </MuiThemeProvider>
+    )}
+}

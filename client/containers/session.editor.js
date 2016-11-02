@@ -1,5 +1,5 @@
 import { composeWithTracker } from 'react-komposer';
-import { Sessions } from '/collections/sessions';
+// import { Sessions } from '/lib/collections/sessions';
 import SessionEditor from '/client/components/session/session.editor.jsx';
 
 const onPropsChange = (props, onData) => {

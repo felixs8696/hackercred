@@ -1,6 +1,6 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
-import { Sessions } from '/collections/sessions';
+// import { Sessions } from '/lib/collections/sessions';
 import { updateSessions } from '/lib/methods/sessions';
 
 var appBarTitleStyle = {

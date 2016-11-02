@@ -1,4 +1,7 @@
 import React from 'react';
+import { FlowRouter } from 'meteor/kadira:flow-router';
+import { addUserToSession } from '/lib/methods/chat';
+import { userInSession } from '/lib/methods/chat';
 import {
   cyan500, cyan700,
   pinkA200,
@@ -20,24 +23,55 @@ const muiTheme = getMuiTheme({
   }
 });
 
-export const Session = ({sesh_navbar, sesh_editor, sesh_video, sesh_chat, login}) => (
-  <MuiThemeProvider muiTheme={muiTheme}>
-    <div style={{overflow: "hidden"}}>
-      {sesh_navbar}
-      <div className="sesh-container">
-        <div className="sesh-col">
-          {sesh_editor}
-        </div>
-        <div className="sesh-col">
-          <div className="sesh-video">
-            {sesh_video}
+export class Session extends React.Component {
+  componentWillMount() {
+    const sessionId = FlowRouter.getParam('sessionId');
+    this.setState({id: sessionId});
+    const userId = Meteor.userId();
+    if (userId) {
+      userInSession.call({sessionId: sessionId, userId: userId}, (err, user) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(user);
+          if (!user) {
+            addUserToSession.call({sessionId: sessionId, userId: userId, userObj: Meteor.user()}, (err, users) => {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log(users);
+              }
+            });
+          }
+        }
+      });
+    }
+  }
+
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <MuiThemeProvider muiTheme={muiTheme}>
+        <div style={{overflow: "hidden"}}>
+          {this.props.sesh_navbar}
+          <div className="sesh-container">
+            <div className="sesh-col">
+              {this.props.sesh_editor}
+            </div>
+            <div className="sesh-col">
+              <div className="sesh-video">
+                {this.props.sesh_video}
+              </div>
+              <div className="sesh-chat">
+                {this.props.sesh_chat}
+              </div>
+            </div>
           </div>
-          <div className="sesh-chat">
-            {sesh_chat}
-          </div>
         </div>
-      </div>
-      {login}
-    </div>
-  </MuiThemeProvider>
-);
+      </MuiThemeProvider>
+    )
+  }
+}
