@@ -6,7 +6,6 @@ class LoginForm extends React.Component {
     super(props);
     console.log(props);
     this.state = {
-      user: this.props.user,
       error: null,
       form: "login"
     };
@@ -52,6 +51,7 @@ class LoginForm extends React.Component {
             return false;
           } else {
             console.log("Logged In: " + Meteor.userId());
+            this.props.updateMeteorId(Meteor.userId());
             return true;
           }
         });
@@ -74,6 +74,7 @@ class LoginForm extends React.Component {
             return false;
           } else {
             console.log("Logged In: " + Meteor.userId());
+            this.props.updateMeteorId(Meteor.userId());
             return true;
           }
         });
@@ -84,23 +85,23 @@ class LoginForm extends React.Component {
     }
   }
 
-    render() {
-      return (
-        <div className="login-container">
-          <form className="login-form" id="login-form" onSubmit={ this._handleSubmit.bind(this) } >
-            <p className="form-title selected" onClick={ this._changeForm.bind(this) } value="login">Log In</p>
-            <p className="form-title" id="register-button" onClick={ this._changeForm.bind(this) } value="register">Register</p>
-            <p className="error-msg">{this.state.error}</p>
-            <div className="login-content">
-              <input type="email" id="loginEmail" placeholder="Email"/>
-              <input type="password" id="loginPassword"  placeholder="Password"/>
-              { this.state.form == "register" ? <input type="password" id="confirmPassword"  placeholder="Confirm Password"/> : null }
-              <input type="submit" className="button" id="login-button" value="Join Session" />
-            </div>
-          </form>
-        </div>
-      );
-    }
+  render() {
+    return (
+      <div className="login-container">
+        <form className="login-form" id="login-form" onSubmit={ this._handleSubmit.bind(this) } >
+          <p className="form-title selected" onClick={ this._changeForm.bind(this) } value="login">Log In</p>
+          <p className="form-title" id="register-button" onClick={ this._changeForm.bind(this) } value="register">Register</p>
+          <p className="error-msg">{this.state.error}</p>
+          <div className="login-content">
+            <input type="email" id="loginEmail" placeholder="Email"/>
+            <input type="password" id="loginPassword"  placeholder="Password"/>
+            { this.state.form == "register" ? <input type="password" id="confirmPassword"  placeholder="Confirm Password"/> : null }
+            <input type="submit" className="button" id="login-button" value="Join Session" />
+          </div>
+        </form>
+      </div>
+    );
+  }
 };
 
 export default class Login extends React.Component {
@@ -113,10 +114,14 @@ export default class Login extends React.Component {
     };
   }
 
+  updateMeteorId(id) {
+    this.setState({ userId: id });
+  }
+
   render() {
     return (
       <div>
-        { !this.state.userId ? <LoginForm /> : null }
+        { !this.state.userId ? <LoginForm updateMeteorId={ this.updateMeteorId.bind(this) } /> : null }
       </div>
     )
   }

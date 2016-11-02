@@ -1,6 +1,10 @@
 @import "_variables";
 @import "_mixins";
 
+.container {
+  position: absolute;
+}
+
 // Dashboard Cover ///////////////////////////////////////////////////////
 .dash_cover {
   position: relative;

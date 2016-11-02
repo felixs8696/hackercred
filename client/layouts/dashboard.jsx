@@ -30,13 +30,14 @@ const muiTheme = getMuiTheme({
   }
 });
 
-export const Dashboard = ({dash_navbar, dash_content}) => (
+export const Dashboard = ({dash_navbar, dash_content, login}) => (
   <MuiThemeProvider muiTheme={muiTheme}>
     <div>
       {dash_navbar}
       <div className="container">
         {dash_content}
       </div>
+      {login}
     </div>
   </MuiThemeProvider>
 );

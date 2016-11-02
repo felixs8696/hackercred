@@ -6,6 +6,7 @@
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,.9);
+  z-index: 10000;
 
   .login-form {
     @include relative-center;
@@ -62,6 +63,7 @@
         background: $accent-lightblue;
         color: white;
         width: auto;
+        cursor: pointer;
       }
     }
   }

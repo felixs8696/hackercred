@@ -19,7 +19,8 @@ FlowRouter.route("/", {
   action (){
     mount(Dashboard, {
       dash_navbar: <DashNavbar/>,
-      dash_content: <DashContent/>
+      dash_content: <DashContent/>,
+      login: <LoginContainer/>
     })
   }
 });
