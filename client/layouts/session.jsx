@@ -20,7 +20,7 @@ const muiTheme = getMuiTheme({
   }
 });
 
-export const Session = ({sesh_navbar, sesh_editor, sesh_video, sesh_chat}) => (
+export const Session = ({sesh_navbar, sesh_editor, sesh_video, sesh_chat, login}) => (
   <MuiThemeProvider muiTheme={muiTheme}>
     <div style={{overflow: "hidden"}}>
       {sesh_navbar}
@@ -37,6 +37,7 @@ export const Session = ({sesh_navbar, sesh_editor, sesh_video, sesh_chat}) => (
           </div>
         </div>
       </div>
+      {login}
     </div>
   </MuiThemeProvider>
 );

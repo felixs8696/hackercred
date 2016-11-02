@@ -13,6 +13,7 @@ import SessionChat from '/client/components/session/session.chat.jsx';
 import SessionChatContainer from '/client/containers/session.chat.js';
 import SessionEditorContainer from '/client/containers/session.editor.js';
 import SessionVideoContainer from '/client/containers/session.video.js';
+import LoginContainer from '/client/containers/login.js';
 
 FlowRouter.route("/", {
   action (){
@@ -29,7 +30,8 @@ FlowRouter.route("/:sessionId", {
       sesh_navbar: <SessionNavbar/>,
       sesh_editor: <SessionEditorContainer/>,
       sesh_video: <SessionVideoContainer/>,
-      sesh_chat: <SessionChatContainer/>
+      sesh_chat: <SessionChatContainer/>,
+      login: <LoginContainer/>
     })
   }
 });

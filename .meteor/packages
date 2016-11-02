@@ -24,3 +24,5 @@ fourseven:scss
 arch:ace-editor
 force-ssl
 aldeed:simple-schema
+accounts-base
+accounts-password
