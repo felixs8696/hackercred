@@ -3,6 +3,7 @@ import {mount} from 'react-mounter';
 import {Dashboard} from '/client/layouts/dashboard.jsx';
 import {Session} from '/client/layouts/session.jsx';
 import {Login} from '/client/layouts/login.jsx';
+import { getSessionObj } from '/lib/methods/sessions';
 
 import DashNavbar from '/client/components/dashboard/dash.navbar.jsx';
 import DashContent from '/client/components/dashboard/dash.content.jsx';
@@ -20,7 +21,6 @@ import LoginContainer from '/client/containers/login.js';
 FlowRouter.route("/:sessionId?/login", {
   name: "login",
   action: (params) => {
-    // console.log(params);
     mount(Login, {
       login: <LoginContainer />
     })
@@ -45,17 +45,39 @@ FlowRouter.route("/", {
 FlowRouter.route("/:sessionId", {
   name: "session",
   triggersEnter: [function(context, redirect) {
+    const sessionId = context.params.sessionId;
     if (!Meteor.userId()) {
-      redirect('login', {sessionId: context.params.sessionId});
+      redirect('login', {sessionId: sessionId});
     } else {
-      if (!context.oldRoute || context.oldRoute.name != "home") {
-        var sessionExists = Sessions.findOne(context.params.sessionId);
-        if (!sessionExists) {
-          console.warn("Session '" + context.params.sessionId + "' does not exist.");
+      console.log(context);
+      const subscription = Meteor.subscribe("sessions", {
+        onReady: () => { console.log("Subscription Ready: ", 200, " OK"); },
+        onError: () => { console.log("Subscription Error: ", arguments); }
+      });
+      if (subscription.ready()) {
+        const session = Sessions.findOne(sessionId);
+        console.log(session);
+        if (!session) {
+          console.warn("Session '" + sessionId + "' does not exist.");
           console.debug("Redirecting to homepage");
           redirect('home');
         }
-      }
+      };
+      // console.log(sessionId);
+      // console.log(Sessions.find(sessionId).fetch());
+      // console.log(Sessions.findOne(sessionId));
+      // getSessionObj.call([], (err, session) => {
+      //   if (err) {
+      //     console.log(err);
+      //   } else {
+      //     console.log(session);
+      //     if (!session) {
+      //       console.warn("Session '" + sessionId + "' does not exist.");
+      //       console.debug("Redirecting to homepage");
+      //       redirect('home');
+      //     }
+      //   }
+      // });
     }
   }],
   action: () => {
