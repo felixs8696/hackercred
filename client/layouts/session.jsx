@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-import { addUserToSession } from '/lib/methods/chat';
+import { connectUserSession } from '/lib/methods/chat';
 import { userInSession } from '/lib/methods/chat';
 import {
   cyan500, cyan700,
@@ -35,7 +35,7 @@ export class Session extends React.Component {
         } else {
           console.log(user);
           if (!user) {
-            addUserToSession.call({sessionId: sessionId, userId: userId, userObj: Meteor.user()}, (err, users) => {
+            connectUserSession.call({sessionId: sessionId, userId: userId, userObj: Meteor.user()}, (err, users) => {
               if (err) {
                 console.log(err);
               } else {

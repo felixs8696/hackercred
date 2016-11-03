@@ -33,6 +33,9 @@ export default class SessionVideo extends React.Component {
   }
 
   componentDidMount() {
+    // var localVid = document.getElementById("video-" + this.state.currentUserId);
+    // localVid.muted = "muted";
+
     this.state.peer.on('open', () => { console.log('Peer: ' + this.state.peer.id) });
 
     this.state.peer.on('call', (incomingCall) => {
@@ -57,7 +60,7 @@ export default class SessionVideo extends React.Component {
     var video = document.querySelector('#video-'+this.state.currentVideo);
 
     var constraints = window.constraints = {
-      audio: true,
+      // audio: true,
       video: true
     };
 
@@ -70,13 +73,13 @@ export default class SessionVideo extends React.Component {
       };
       window.stream = stream; // make variable available to browser console
       video.srcObject = stream;
-      var audioContext = new AudioContext();
+      // var audioContext = new AudioContext();
 
       // Create an AudioNode from the stream
-      var mediaStreamSource = audioContext.createMediaStreamSource(stream);
+      // var mediaStreamSource = audioContext.createMediaStreamSource(stream);
 
       // Connect it to the destination or any other node for processing!
-      mediaStreamSource.connect(audioContext.destination);
+      // mediaStreamSource.connect(audioContext.destination);
     }
 
     function handleError(error) {
