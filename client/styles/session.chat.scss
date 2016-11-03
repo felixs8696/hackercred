@@ -93,6 +93,7 @@ textarea::-webkit-scrollbar-thumb {
 
       .message-bubble {
         display: inline-block;
+        min-height: $navbar-height;
 
         .message-bar {
           width: $navbar-height;

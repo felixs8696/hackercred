@@ -16,12 +16,17 @@ const sidebarIconStyle = {
 
 export default class SessionChat extends React.Component {
   componentDidMount() {
-    this.setState({msgBox: document.getElementById('msgBox')});
+    var msgBox = document.getElementById('msgBox');
+    this.setState({msgBox: msgBox});
+    msgBox.scrollTop = msgBox.scrollHeight;
   }
 
   constructor(props) {
     super(props);
     this.state = this.props.session.chat;
+    this.state.sessionId = FlowRouter.getParam('sessionId');
+    this.state.text = '';
+    this.state.currentUserId = Meteor.userId();
     this.state.users = this.props.session.users;
 
     this._sendMessage = this._sendMessage.bind(this);
@@ -37,17 +42,19 @@ export default class SessionChat extends React.Component {
         content: this.state.text,
         time_created: new Date()
       }
-      updateChat.call({sessionId: this.state.id, msg: message}, (err, res) => {
+      console.log(this.state.sessionId);
+      updateChat.call({sessionId: this.state.sessionId, msg: message}, (err, res) => {
         if (err) {
           console.log(err);
         } else {
           console.log(res);
-          this.setState({messages: this.props.session.chat.messages});
+          // this.setState({messages: this.props.session.chat.messages});
           console.log(this.state);
         }
       });
       this.setState({text: ''});
-      this.state.msgBox.scrollTop = this.state.msgBox.scrollHeight;
+      console.log(this.state.msgBox);
+      setTimeout(() => {this.state.msgBox.scrollTop = this.state.msgBox.scrollHeight}, 10);
       return true;
     }
     return false;
@@ -58,7 +65,7 @@ export default class SessionChat extends React.Component {
   }
 
   _messages() {
-    return this.state.messages.map((data) => {
+    return this.props.session.chat.messages.map((data) => {
       if (data.from == this.state.currentUserId) {
         return ( <div key={data.time_created} className="message-container right">
           <div className="message-preview-container">
@@ -66,7 +73,7 @@ export default class SessionChat extends React.Component {
           </div>
           <div className="message-bubble">
             <div className="message-bar">
-              <div className="message-picture" style={{background: 'url(' + this.state.users[data.from].image + ')'}}></div>
+              <div className="message-picture" style={{background: 'url(' + this.state.users[data.from].profile.image + ')'}}></div>
             </div>
             <div className="message-text">{data.content}</div>
           </div>
@@ -75,7 +82,7 @@ export default class SessionChat extends React.Component {
       return ( <div key={data.time_created} className="message-container left">
         <div className="message-bubble">
           <div className="message-bar">
-            <div className="message-picture" style={{background: 'url(' + this.state.users[data.from].image + ')'}}></div>
+            <div className="message-picture" style={{background: 'url(' + this.state.users[data.from].profile.image + ')'}}></div>
           </div>
           <div className="message-text">{data.content}</div>
         </div>
