@@ -115,6 +115,7 @@
 
   .tab-content {
     padding: $padding-amount;
+    height: calc(100vh - #{$navbar-height} - (2 * #{$padding-amount}) - #{$tabbar-height});
 
     .profile-content {
       line-height: $display-lineheight;

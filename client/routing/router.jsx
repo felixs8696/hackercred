@@ -3,7 +3,6 @@ import {mount} from 'react-mounter';
 import {Dashboard} from '/client/layouts/dashboard.jsx';
 import {Session} from '/client/layouts/session.jsx';
 import {Login} from '/client/layouts/login.jsx';
-import { getSessionObj } from '/lib/methods/sessions';
 
 import DashNavbar from '/client/components/dashboard/dash.navbar.jsx';
 import DashContent from '/client/components/dashboard/dash.content.jsx';
