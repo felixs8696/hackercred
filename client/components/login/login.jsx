@@ -3,7 +3,6 @@ import { Accounts } from 'meteor/accounts-base';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
 function enterSite(sessionId) {
-  console.log(sessionId);
   if (!sessionId || sessionId.length == 0) {
     FlowRouter.go("/");
   } else {
@@ -16,13 +15,9 @@ class LoginForm extends React.Component {
     this.setState({id: FlowRouter.getParam('sessionId')});
   }
 
-  componentDidMount() {
-    console.log('form');
-  }
-
   constructor(props) {
     super(props);
-    console.log(props);
+
     this.state = {
       error: null,
       form: "login"
@@ -109,7 +104,6 @@ class LoginForm extends React.Component {
   }
 
   render() {
-    console.log('renders');
     return (
       <div className="login-container">
         <form className="login-form" id="login-form" onSubmit={ this._handleSubmit.bind(this) } >

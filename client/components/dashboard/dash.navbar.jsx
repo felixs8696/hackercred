@@ -16,8 +16,9 @@ var appBarTitleStyle = {
 }
 
 export default class DashNavbar extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props);
+
     this.createNewSession = this.createNewSession.bind(this);
   }
 

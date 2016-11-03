@@ -47,6 +47,15 @@ FlowRouter.route("/:sessionId", {
   triggersEnter: [function(context, redirect) {
     if (!Meteor.userId()) {
       redirect('login', {sessionId: context.params.sessionId});
+    } else {
+      if (!context.oldRoute || context.oldRoute.name != "home") {
+        var sessionExists = Sessions.findOne(context.params.sessionId);
+        if (!sessionExists) {
+          console.warn("Session '" + context.params.sessionId + "' does not exist.");
+          console.debug("Redirecting to homepage");
+          redirect('home');
+        }
+      }
     }
   }],
   action: () => {

@@ -4,7 +4,6 @@ import Login from '/client/components/login/login.jsx';
 
 const onPropsChange = (props, onData) => {
   var user = Meteor.user();
-  console.log("hello");
   onData(null, {user});
 };
 

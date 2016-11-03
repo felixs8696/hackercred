@@ -167,3 +167,13 @@
     }
   }
 }
+
+tr {
+  color: $font-gray !important;
+  cursor: pointer;
+}
+
+td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
