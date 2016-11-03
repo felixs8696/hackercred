@@ -54,7 +54,7 @@ export default class SessionVideo extends React.Component {
     });
 
     var errorElement = document.querySelector('#error');
-    var video = document.querySelector('video');
+    var video = document.querySelector('#video-'+this.state.currentVideo);
 
     var constraints = window.constraints = {
       audio: true,
@@ -128,8 +128,16 @@ export default class SessionVideo extends React.Component {
   _videos() {
     return Object.keys(this.state.users).map((key, index) => {
       var display = {display: 'block'};
-      if (key == this.state.currentVideo) display = {display: 'none'};
-      return (<video key={'video-' + key} className="video" id={'video-' + key} value={'video-' + key} style={display} autoPlay></video>);
+      console.log(key + ': '+ this.state.currentUserId);
+      if (key != this.state.currentVideo) display = {display: 'none'};
+      if (key == this.state.currentUserId) {
+        var vid = <video muted key={'video-' + key} className="video" id={'video-' + key} value={'video-' + key} style={display} autoPlay></video>;
+        console.log(vid);
+        vid.muted = true;
+        return (vid);
+      } else {
+          return (<video key={'video-' + key} className="video" id={'video-' + key} value={'video-' + key} style={display} autoPlay></video>);
+      }
     });
   }
 
