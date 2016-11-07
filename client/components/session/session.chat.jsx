@@ -21,6 +21,10 @@ export default class SessionChat extends React.Component {
     msgBox.scrollTop = msgBox.scrollHeight;
   }
 
+  componentDidUpdate() {
+    this.state.msgBox.scrollTop = this.state.msgBox.scrollHeight;
+  }
+
   constructor(props) {
     super(props);
     this.state = this.props.session.chat;
@@ -53,8 +57,6 @@ export default class SessionChat extends React.Component {
         }
       });
       this.setState({text: ''});
-      console.log(this.state.msgBox);
-      setTimeout(() => {this.state.msgBox.scrollTop = this.state.msgBox.scrollHeight}, 10);
       return true;
     }
     return false;
