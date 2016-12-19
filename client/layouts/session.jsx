@@ -29,19 +29,26 @@ export class Session extends React.Component {
     this.setState({id: sessionId});
     const userId = Meteor.userId();
     if (userId) {
-      userInSession.call({sessionId: sessionId, userId: userId}, (err, user) => {
+      userInSession.call({sessionId: sessionId, userId: userId}, (err, res) => {
         if (err) {
           console.log(err);
         } else {
-          console.log(user);
-          if (!user) {
-            connectUserSession.call({sessionId: sessionId, userId: userId, userObj: Meteor.user()}, (err, users) => {
-              if (err) {
-                console.log(err);
-              } else {
-                console.log(users);
-              }
-            });
+          console.log(res);
+          var sessionExists = res.sessionExists;
+          if (!sessionExists) {
+            console.log("Session does not exist");
+            FlowRouter.go("/");
+          } else {
+            var user = res.userContent;
+            if (!user) {
+              connectUserSession.call({sessionId: sessionId, userId: userId, userObj: Meteor.user()}, (err, users) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  console.log(users);
+                }
+              });
+            }
           }
         }
       });

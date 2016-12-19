@@ -27,20 +27,15 @@ var replaceChildNode = function(node, type, className, style, text) {
 }
 
 export default class SessionVideo extends React.Component {
-  componentWillMount() {
-    this.setState({currentUserId: Meteor.userId()});
-    this.setState({currentVideo: Meteor.userId()});
-  }
 
-  componentDidMount() {
-
-    ////////
+  startup() {
     var errorElement = document.querySelector('#error');
     var video = document.querySelector('#video-'+this.state.currentVideo);
-    var video2 = document.querySelector('#video-507f191e810c19729de860ea');
-    var video3 = document.querySelector('#video-094f129e012c92123ng923va');
-
-    start();
+    // var video2 = document.querySelector('#video-507f191e810c19729de860ea');
+    // var video3 = document.querySelector('#video-094f129e012c92123ng923va');
+    if (video) {
+        start();
+    }
 
     function start() {
       console.log('Requesting local stream');
@@ -93,23 +88,17 @@ export default class SessionVideo extends React.Component {
     var offerOptions = { offerToReceiveAudio: 1, offerToReceiveVideo: 1 };
 
     var pcCollection = {
-      local: {
-        // "pc1": null,
-        // "pc2": null
-      },
-      remote: {
-        // "pc1": null,
-        // "pc2": null
-      }
+      local: {},
+      remote: {}
     }
 
-    function createStream(name, video) {
+    function createStream(name, videoNode) {
       var servers = null;
       pcCollection.local[name] = new RTCPeerConnection(servers);
       console.log(pcCollection.local);
       pcCollection.remote[name] = new RTCPeerConnection(servers);
       pcCollection.remote[name].onaddstream = (e) => {
-        video.srcObject = e.stream;
+        videoNode.srcObject = e.stream;
         console.log(name + ': Received remote stream');
       };
       pcCollection.local[name].onicecandidate = (event) => {
@@ -223,6 +212,20 @@ export default class SessionVideo extends React.Component {
     function onAddIceCandidateError(error) {
       console.log('Failed to add ICE candidate: ' + error.toString());
     }
+  }
+  componentWillMount() {
+    this.setState({currentUserId: Meteor.userId()});
+    this.setState({currentVideo: Meteor.userId()});
+  }
+
+  componentDidMount() {
+    this.startup();
+    ////////
+    // setTimeout(() => {
+    //   window.requestAnimationFrame(() => {
+    //     this.startup();
+    //   })
+    // }, 0);
     // var localVid = document.getElementById("video-" + this.state.currentUserId);
     // localVid.muted = "muted";
 

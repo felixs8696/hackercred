@@ -2,11 +2,15 @@ if (Meteor.isClient) {
   import React from 'react';
   import {mount} from 'react-mounter';
   import {Dashboard} from '/client/layouts/dashboard.jsx';
+  import {Base} from '/client/layouts/base.jsx';
   import {Session} from '/client/layouts/session.jsx';
   import {Login} from '/client/layouts/login.jsx';
 
   import DashNavbar from '/client/components/dashboard/dash.navbar.jsx';
   import DashContent from '/client/components/dashboard/dash.content.jsx';
+
+  import BaseNavbar from '/client/components/base/base.navbar.jsx';
+  import BaseContent from '/client/components/base/base.content.jsx';
 
   import SessionNavbar from '/client/components/session/session.navbar.jsx';
   import SessionEditor from '/client/components/session/session.editor.jsx';
@@ -28,6 +32,21 @@ FlowRouter.route("/:sessionId?/login", {
   }
 });
 
+// FlowRouter.route("/", {
+//   name: "home",
+//   triggersEnter: [function(context, redirect) {
+//     if (!Meteor.userId()) {
+//       redirect('login');
+//     }
+//   }],
+//   action: () => {
+//     mount(Dashboard, {
+//       dash_navbar: <DashNavbar/>,
+//       dash_content: <DashContent/>
+//     })
+//   }
+// });
+
 FlowRouter.route("/", {
   name: "home",
   triggersEnter: [function(context, redirect) {
@@ -36,9 +55,9 @@ FlowRouter.route("/", {
     }
   }],
   action: () => {
-    mount(Dashboard, {
-      dash_navbar: <DashNavbar/>,
-      dash_content: <DashContent/>
+    mount(Base, {
+      navbar: <BaseNavbar/>,
+      content: <BaseContent/>
     })
   }
 });
