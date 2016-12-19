@@ -31,11 +31,7 @@ export default class SessionVideo extends React.Component {
   startup() {
     var errorElement = document.querySelector('#error');
     var video = document.querySelector('#video-'+this.state.currentVideo);
-    // var video2 = document.querySelector('#video-507f191e810c19729de860ea');
-    // var video3 = document.querySelector('#video-094f129e012c92123ng923va');
-    if (video) {
-        start();
-    }
+    if (video) start();
 
     function start() {
       console.log('Requesting local stream');
@@ -252,6 +248,7 @@ export default class SessionVideo extends React.Component {
 
   constructor(props) {
     super(props);
+    this.props.session.users[Meteor.userId()] = Meteor.user();
     this.state = {
       // data: this.props.session.video,
       users: this.props.session.users,
