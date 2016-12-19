@@ -33,46 +33,35 @@ export default class SessionVideo extends React.Component {
   }
 
   componentDidMount() {
-    // var localVid = document.getElementById("video-" + this.state.currentUserId);
-    // localVid.muted = "muted";
 
-    this.state.peer.on('open', () => { console.log('Peer: ' + this.state.peer.id) });
-
-    this.state.peer.on('call', (incomingCall) => {
-      this.setState({ currentCall: incomingCall });
-      var newUserId = '094f129e012c92123ng923va';
-      var newUserObj = {
-        firstname: 'Mark',
-        lastname: 'Zuckerberg',
-        image: 'http://blogs.timesofindia.indiatimes.com/wp-content/uploads/2015/12/mark-zuckerberg.jpg'
-      }
-      this.state.users[newUserId] = newUserObj;
-      incomingCall.answer(this.state.localStream);
-      incomingCall.on('stream', (remoteStream) => {
-        this.setState({ remoteStream: remoteStream })
-        var video = document.getElementById(newUserId);
-        console.log(video);
-        video.src = URL.createObjectURL(remoteStream);
-      });
-    });
-
+    ////////
     var errorElement = document.querySelector('#error');
     var video = document.querySelector('#video-'+this.state.currentVideo);
+    var video2 = document.querySelector('#video-507f191e810c19729de860ea');
+    var video3 = document.querySelector('#video-094f129e012c92123ng923va');
 
-    var constraints = window.constraints = {
-      // audio: true,
-      video: true
-    };
+    start();
+
+    function start() {
+      console.log('Requesting local stream');
+      navigator.mediaDevices.getUserMedia({
+        // audio: true,
+        video: true
+      })
+      .then(handleSuccess)
+      .catch(handleError);
+    }
 
     function handleSuccess(stream) {
+      console.log('Received local stream');
       var videoTracks = stream.getVideoTracks();
-      console.log('Got stream with constraints:', constraints);
       console.log('Using video device: ' + videoTracks[0].label);
       stream.oninactive = function() {
         console.log('Stream inactive');
       };
-      window.stream = stream; // make variable available to browser console
+      window.localstream = stream; // make variable available to browser console
       video.srcObject = stream;
+      call();
       // var audioContext = new AudioContext();
 
       // Create an AudioNode from the stream
@@ -100,8 +89,162 @@ export default class SessionVideo extends React.Component {
       }
     }
 
-    navigator.mediaDevices.getUserMedia(constraints).
-        then(handleSuccess).catch(handleError);
+    ////////
+    var offerOptions = { offerToReceiveAudio: 1, offerToReceiveVideo: 1 };
+
+    var pcCollection = {
+      local: {
+        // "pc1": null,
+        // "pc2": null
+      },
+      remote: {
+        // "pc1": null,
+        // "pc2": null
+      }
+    }
+
+    function createStream(name, video) {
+      var servers = null;
+      pcCollection.local[name] = new RTCPeerConnection(servers);
+      console.log(pcCollection.local);
+      pcCollection.remote[name] = new RTCPeerConnection(servers);
+      pcCollection.remote[name].onaddstream = (e) => {
+        video.srcObject = e.stream;
+        console.log(name + ': Received remote stream');
+      };
+      pcCollection.local[name].onicecandidate = (event) => {
+        handleCandidate(event.candidate, pcCollection.remote[name], name + ': ', 'local');
+      };
+      pcCollection.remote[name].onicecandidate = (event) => {
+        handleCandidate(event.candidate, pcCollection.local[name], name + ': ', 'remote');
+      };
+      console.log(name + ': Created local and remote peer connection objects: ');
+    }
+
+    function addStreams() {
+      var localPcs = pcCollection.local;
+      var remotePcs = pcCollection.remote;
+      for (var name in localPcs) {
+         if (localPcs.hasOwnProperty(name)) {
+           localPcs[name].addStream(window.localstream);
+           console.log('Adding local stream to' + name);
+           localPcs[name].createOffer(offerOptions)
+           .then((desc) => {
+               localPcs[name].setLocalDescription(desc);
+               console.log('Offer from ' + name + ' (local) \n' + desc.sdp);
+               remotePcs[name].setRemoteDescription(desc);
+               // Since the 'remote' side has no media stream we need
+               // to pass in the right constraints in order for it to
+               // accept the incoming offer of audio and video.
+               remotePcs[name].createAnswer().then(
+                 (desc) => {
+                   remotePcs[name].setLocalDescription(desc);
+                   console.log('Answer from ' + name + ' (remote) \n' + desc.sdp);
+                   localPcs[name].setRemoteDescription(desc);
+                 },
+                 onCreateSessionDescriptionError
+               );
+             },
+             onCreateSessionDescriptionError
+           ).catch((err) => {
+             console.log("SDP ERROR: " + err);
+           });
+         }
+      }
+    }
+
+    var call = () => {
+      console.log('Starting calls');
+      var audioTracks = window.localstream.getAudioTracks();
+      var videoTracks = window.localstream.getVideoTracks();
+      if (audioTracks.length > 0) {
+        console.log('Using audio device: ' + audioTracks[0].label);
+      }
+      if (videoTracks.length > 0) {
+        console.log('Using video device: ' + videoTracks[0].label);
+      }
+      // Create an RTCPeerConnection via the polyfill.
+      // TODO: Define video 2
+      // createStream("pc1", video2);
+
+      // TODO: Define video 3
+      // createStream("pc2", video3);
+      var otherUserId = null;
+      var otherVideo = null;
+      for (var id in this.state.users) {
+        if (id != "507f191e810c19729de860ea" && id != "094f129e012c92123ng923va" && id != this.state.currentUserId) {
+          otherUserId = id;
+          otherVideo = document.querySelector('#video-' + otherUserId);
+          console.log(otherUserId + ": " + otherVideo);
+        }
+      }
+      createStream(otherUserId, otherVideo);
+
+      addStreams();
+    }
+
+    function hangup() {
+      console.log('Ending calls');
+      var localPcs = pcCollection.local;
+      for (var name in localPcs) {
+         if (localPcs.hasOwnProperty(name)) {
+           localPcs[name].close();
+           localPcs[name] = null;
+         }
+      }
+      var remotePcs = pcCollection.remote;
+      for (var name in remotePcs) {
+         if (remotePcs.hasOwnProperty(name)) {
+           remotePcs[name].close();
+           remotePcs[name] = null;
+         }
+      }
+    }
+
+    function onCreateSessionDescriptionError(error) {
+      console.log('Failed to create session description: ' + error.toString());
+    }
+
+    function handleCandidate(candidate, dest, prefix, type) {
+      if (candidate) {
+        dest.addIceCandidate(candidate)
+        .then(
+          onAddIceCandidateSuccess,
+          onAddIceCandidateError
+        );
+        console.log(prefix + 'New ' + type + ' ICE candidate: ' + candidate.candidate);
+      }
+    }
+
+    function onAddIceCandidateSuccess() {
+      console.log('AddIceCandidate success.');
+    }
+
+    function onAddIceCandidateError(error) {
+      console.log('Failed to add ICE candidate: ' + error.toString());
+    }
+    // var localVid = document.getElementById("video-" + this.state.currentUserId);
+    // localVid.muted = "muted";
+
+    // this.state.peer.on('open', () => { console.log('Peer: ' + this.state.peer.id) });
+    //
+    // this.state.peer.on('call', (incomingCall) => {
+    //   this.setState({ currentCall: incomingCall });
+    //   var newUserId = '094f129e012c92123ng923va';
+    //   var newUserObj = {
+    //     firstname: 'Mark',
+    //     lastname: 'Zuckerberg',
+    //     image: 'http://blogs.timesofindia.indiatimes.com/wp-content/uploads/2015/12/mark-zuckerberg.jpg'
+    //   }
+    //   this.state.users[newUserId] = newUserObj;
+    //   incomingCall.answer(this.state.localStream);
+    //   incomingCall.on('stream', (remoteStream) => {
+    //     this.setState({ remoteStream: remoteStream })
+    //     var video = document.getElementById(newUserId);
+    //     console.log(video);
+    //     video.src = URL.createObjectURL(remoteStream);
+    //   });
+    // });
   }
 
   constructor(props) {
@@ -131,11 +274,11 @@ export default class SessionVideo extends React.Component {
   _videos() {
     return Object.keys(this.state.users).map((key, index) => {
       var display = {display: 'block'};
-      console.log(key + ': '+ this.state.currentUserId);
+      // console.log(key + ': '+ this.state.currentUserId);
       if (key != this.state.currentVideo) display = {display: 'none'};
       if (key == this.state.currentUserId) {
         var vid = <video muted key={'video-' + key} className="video" id={'video-' + key} value={'video-' + key} style={display} autoPlay></video>;
-        console.log(vid);
+        // console.log(vid);
         vid.muted = true;
         return (vid);
       } else {
@@ -160,7 +303,7 @@ export default class SessionVideo extends React.Component {
 
   _changeVideo(event) {
     var previous = document.getElementById(this.state.currentVideo);
-    console.log(previous);
+    // console.log(previous);
     replaceChildNode(previous, "div", "video-user-picture", { background: 'url(' + this.state.users[this.state.currentVideo].profile.image + ')', border: '3px solid ' + this.state.users[this.state.currentVideo].color });
     var id = event.currentTarget.getAttribute("value");
     replaceChildNode(event.currentTarget, "div", "video-user-initial", null, this.state.users[id].profile.firstname[0]);

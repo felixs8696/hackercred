@@ -77,7 +77,7 @@ export default class DashContent extends React.Component {
                 console.log(err);
                 return null;
               } else {
-                console.log(session);
+                // console.log(session);
                 const subjects = ['CS170', 'CS188'];
                 var sessionData = {
                   date: moment(session.createdAt).format('MM.DD.YYYY  @  h:mma'),
