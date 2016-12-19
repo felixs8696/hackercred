@@ -90,9 +90,9 @@ export default class SessionVideo extends React.Component {
 
     function createStream(name, videoNode) {
       var servers = null;
-      pcCollection.local[name] = new RTCPeerConnection(servers);
+      pcCollection.local[name] = new webkitRTCPeerConnection(servers);
       console.log(pcCollection.local);
-      pcCollection.remote[name] = new RTCPeerConnection(servers);
+      pcCollection.remote[name] = new webkitRTCPeerConnection(servers);
       pcCollection.remote[name].onaddstream = (e) => {
         videoNode.srcObject = e.stream;
         console.log(name + ': Received remote stream');
@@ -224,26 +224,6 @@ export default class SessionVideo extends React.Component {
     // }, 0);
     // var localVid = document.getElementById("video-" + this.state.currentUserId);
     // localVid.muted = "muted";
-
-    // this.state.peer.on('open', () => { console.log('Peer: ' + this.state.peer.id) });
-    //
-    // this.state.peer.on('call', (incomingCall) => {
-    //   this.setState({ currentCall: incomingCall });
-    //   var newUserId = '094f129e012c92123ng923va';
-    //   var newUserObj = {
-    //     firstname: 'Mark',
-    //     lastname: 'Zuckerberg',
-    //     image: 'http://blogs.timesofindia.indiatimes.com/wp-content/uploads/2015/12/mark-zuckerberg.jpg'
-    //   }
-    //   this.state.users[newUserId] = newUserObj;
-    //   incomingCall.answer(this.state.localStream);
-    //   incomingCall.on('stream', (remoteStream) => {
-    //     this.setState({ remoteStream: remoteStream })
-    //     var video = document.getElementById(newUserId);
-    //     console.log(video);
-    //     video.src = URL.createObjectURL(remoteStream);
-    //   });
-    // });
   }
 
   constructor(props) {
@@ -253,15 +233,7 @@ export default class SessionVideo extends React.Component {
       // data: this.props.session.video,
       users: this.props.session.users,
       currentUserId: Meteor.userId(),
-      currentVideo: Meteor.userId(),
-      peer: new Peer({
-        key: '3rzxypo1rwq7u8fr',
-        debug: 3,
-        config: {'iceServers': [
-          { url: 'stun:stun.l.google.com:19302' },
-          { url: 'stun:stun1.l.google.com:19302' },
-        ]}
-      })
+      currentVideo: Meteor.userId()
     }
     console.log(this.props.session);
     console.log(Sessions.find().fetch());
