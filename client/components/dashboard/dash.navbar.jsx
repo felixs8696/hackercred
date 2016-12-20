@@ -23,12 +23,12 @@ export default class DashNavbar extends React.Component {
   }
 
   createNewSession() {
-    updateSessions.call([], (err, res) => {
+    updateSessions.call({ownerId: Meteor.userId()}, (err, res) => {
       if (err) {
         console.log(err);
       } else {
         console.log('New Session: ' + res);
-        FlowRouter.go('/' + res);
+        FlowRouter.go('/' + Meteor.userId() + '/' + res);
       }
     });
   }

@@ -12,6 +12,7 @@
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
     "react-komposer": "^1.13.1",
+    "react-load-script": "0.0.2",
     "react-mounter": "^1.2.0",
     "react-tap-event-plugin": "git+https://github.com/zilverline/react-tap-event-plugin.git#master",
     "replit-client": "^0.6.2"

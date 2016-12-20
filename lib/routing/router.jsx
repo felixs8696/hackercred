@@ -62,7 +62,7 @@ FlowRouter.route("/", {
   }
 });
 
-FlowRouter.route("/:sessionId", {
+FlowRouter.route("/:ownerId/:sessionId", {
   name: "session",
   triggersEnter: [function(context, redirect) {
     const sessionId = context.params.sessionId;

@@ -1,4 +1,5 @@
 import React from 'react';
+import Script from 'react-load-script'
 
 Colors = {};
 Colors.names = {
@@ -28,215 +29,91 @@ var replaceChildNode = function(node, type, className, style, text) {
 
 export default class SessionVideo extends React.Component {
 
-  startup() {
-    var errorElement = document.querySelector('#error');
-    var video = document.querySelector('#video-'+this.state.currentVideo);
-    if (video) start();
-
-    function start() {
-      console.log('Requesting local stream');
-      navigator.mediaDevices.getUserMedia({
-        // audio: true,
-        video: true
-      })
-      .then(handleSuccess)
-      .catch(handleError);
-    }
-
-    function handleSuccess(stream) {
-      console.log('Received local stream');
-      var videoTracks = stream.getVideoTracks();
-      console.log('Using video device: ' + videoTracks[0].label);
-      stream.oninactive = function() {
-        console.log('Stream inactive');
-      };
-      window.localstream = stream; // make variable available to browser console
-      video.srcObject = stream;
-      call();
-      // var audioContext = new AudioContext();
-
-      // Create an AudioNode from the stream
-      // var mediaStreamSource = audioContext.createMediaStreamSource(stream);
-
-      // Connect it to the destination or any other node for processing!
-      // mediaStreamSource.connect(audioContext.destination);
-    }
-
-    function handleError(error) {
-      errorMsg('Error: ' + error.name, error);
-      if (error.name === 'ConstraintNotSatisfiedError') {
-        errorMsg('The resolution ' + constraints.video.width.exact + 'x' +
-            constraints.video.width.exact + ' px is not supported by your device.');
-      } else if (error.name === 'PermissionDeniedError') {
-        errorMsg('Permissions have not been granted to use your camera and ' +
-          'microphone. Please allow the page access to your devices.');
-      }
-    }
-
-    function errorMsg(msg, error) {
-      errorElement.innerHTML += '<p>' + msg + '</p>';
-      if (typeof error !== 'undefined') {
-        console.error(error);
-      }
-    }
-
-    ////////
-    var offerOptions = { offerToReceiveAudio: 1, offerToReceiveVideo: 1 };
-
-    var pcCollection = {
-      local: {},
-      remote: {}
-    }
-
-    function createStream(name, videoNode) {
-      var servers = null;
-      pcCollection.local[name] = new webkitRTCPeerConnection(servers);
-      console.log(pcCollection.local);
-      pcCollection.remote[name] = new webkitRTCPeerConnection(servers);
-      pcCollection.remote[name].onaddstream = (e) => {
-        videoNode.srcObject = e.stream;
-        console.log(name + ': Received remote stream');
-      };
-      pcCollection.local[name].onicecandidate = (event) => {
-        handleCandidate(event.candidate, pcCollection.remote[name], name + ': ', 'local');
-      };
-      pcCollection.remote[name].onicecandidate = (event) => {
-        handleCandidate(event.candidate, pcCollection.local[name], name + ': ', 'remote');
-      };
-      console.log(name + ': Created local and remote peer connection objects: ');
-    }
-
-    function addStreams() {
-      var localPcs = pcCollection.local;
-      var remotePcs = pcCollection.remote;
-      for (var name in localPcs) {
-         if (localPcs.hasOwnProperty(name)) {
-           localPcs[name].addStream(window.localstream);
-           console.log('Adding local stream to' + name);
-           localPcs[name].createOffer(offerOptions)
-           .then((desc) => {
-               localPcs[name].setLocalDescription(desc);
-               console.log('Offer from ' + name + ' (local) \n' + desc.sdp);
-               remotePcs[name].setRemoteDescription(desc);
-               // Since the 'remote' side has no media stream we need
-               // to pass in the right constraints in order for it to
-               // accept the incoming offer of audio and video.
-               remotePcs[name].createAnswer().then(
-                 (desc) => {
-                   remotePcs[name].setLocalDescription(desc);
-                   console.log('Answer from ' + name + ' (remote) \n' + desc.sdp);
-                   localPcs[name].setRemoteDescription(desc);
-                 },
-                 onCreateSessionDescriptionError
-               );
-             },
-             onCreateSessionDescriptionError
-           ).catch((err) => {
-             console.log("SDP ERROR: " + err);
-           });
-         }
-      }
-    }
-
-    var call = () => {
-      console.log('Starting calls');
-      var audioTracks = window.localstream.getAudioTracks();
-      var videoTracks = window.localstream.getVideoTracks();
-      if (audioTracks.length > 0) {
-        console.log('Using audio device: ' + audioTracks[0].label);
-      }
-      if (videoTracks.length > 0) {
-        console.log('Using video device: ' + videoTracks[0].label);
-      }
-      // Create an RTCPeerConnection via the polyfill.
-      // TODO: Define video 2
-      // createStream("pc1", video2);
-
-      // TODO: Define video 3
-      // createStream("pc2", video3);
-      var otherUserId = null;
-      var otherVideo = null;
-      for (var id in this.state.users) {
-        if (id != "507f191e810c19729de860ea" && id != "094f129e012c92123ng923va" && id != this.state.currentUserId) {
-          otherUserId = id;
-          otherVideo = document.querySelector('#video-' + otherUserId);
-          console.log(otherUserId + ": " + otherVideo);
-        }
-      }
-      createStream(otherUserId, otherVideo);
-
-      addStreams();
-    }
-
-    function hangup() {
-      console.log('Ending calls');
-      var localPcs = pcCollection.local;
-      for (var name in localPcs) {
-         if (localPcs.hasOwnProperty(name)) {
-           localPcs[name].close();
-           localPcs[name] = null;
-         }
-      }
-      var remotePcs = pcCollection.remote;
-      for (var name in remotePcs) {
-         if (remotePcs.hasOwnProperty(name)) {
-           remotePcs[name].close();
-           remotePcs[name] = null;
-         }
-      }
-    }
-
-    function onCreateSessionDescriptionError(error) {
-      console.log('Failed to create session description: ' + error.toString());
-    }
-
-    function handleCandidate(candidate, dest, prefix, type) {
-      if (candidate) {
-        dest.addIceCandidate(candidate)
-        .then(
-          onAddIceCandidateSuccess,
-          onAddIceCandidateError
-        );
-        console.log(prefix + 'New ' + type + ' ICE candidate: ' + candidate.candidate);
-      }
-    }
-
-    function onAddIceCandidateSuccess() {
-      console.log('AddIceCandidate success.');
-    }
-
-    function onAddIceCandidateError(error) {
-      console.log('Failed to add ICE candidate: ' + error.toString());
-    }
-  }
   componentWillMount() {
     this.setState({currentUserId: Meteor.userId()});
     this.setState({currentVideo: Meteor.userId()});
   }
 
   componentDidMount() {
-    this.startup();
-    ////////
-    // setTimeout(() => {
-    //   window.requestAnimationFrame(() => {
-    //     this.startup();
-    //   })
-    // }, 0);
-    // var localVid = document.getElementById("video-" + this.state.currentUserId);
-    // localVid.muted = "muted";
+    $.when(
+        $.getScript( "https://rtcmulticonnection.herokuapp.com/dist/RTCMultiConnection.min.js" ),
+        $.getScript( "https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js" ),
+        $.Deferred(function( deferred ){
+            $( deferred.resolve );
+        })
+    ).done(() => {
+      var connection = new RTCMultiConnection();
+
+      connection.userid = Meteor.userId();
+      connection.sessionid = this.state.ownerId;
+
+      connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
+
+      connection.session = {
+          audio: true,
+          video: true
+      };
+
+      connection.sdpConstraints.mandatory = {
+          OfferToReceiveAudio: true,
+          OfferToReceiveVideo: true
+      };
+
+      connection.onstream = function(event) {
+          document.getElementById("video-container").appendChild( event.mediaElement );
+      };
+
+      connection.onstream = (event) => {
+          var video = event.mediaElement;
+          console.log(event);
+          console.log(connection);
+          // if (event.userid == this.state.sessionId) {
+          //   event.userid = connection.userid;
+          // }
+          // if (event.type == "remote") {
+          //     this.state.videoSrc[event.userid] = event.mediaElement;
+          // }
+          // if (event.type == "local") {
+          //   // connection.changeUserId('your-new-userid');
+          //   this.state.videoSrc[Meteor.userId()] = event.mediaElement;
+          // }
+          this.state.videoSrc[event.userid] = event.mediaElement;
+      };
+
+      connection.openOrJoin(this.state.ownerId, function(roomExists, roomid) {
+        if(!roomExists) {
+          console.log("OPENING");
+        } else {
+          console.log("JOINING: " + roomExists);
+        }
+      });
+
+      // connection.checkPresence(this.state.sessionid, function(roomExists, roomid) {
+      //   if(!roomExists) {
+      //     console.log("OPENING");
+      //     console.log(connection.userid);
+      //     connection.changeUserId(Meteor.userId());
+      //     connection.open(roomid);
+      //   } else {
+      //     console.log("JOINING: " + roomExists);
+      //     connection.join(roomid);
+      //   }
+      //   console.log(connection);
+      // });
+    });
   }
 
   constructor(props) {
     super(props);
     this.props.session.users[Meteor.userId()] = Meteor.user();
     this.state = {
-      // data: this.props.session.video,
+      videoSrc: {},
+      sessionId: this.props.session._id,
       users: this.props.session.users,
+      ownerId: this.props.session.ownerId,
       currentUserId: Meteor.userId(),
       currentVideo: Meteor.userId()
     }
-    console.log(this.props.session);
-    console.log(Sessions.find().fetch());
 
     this._videos = this._videos.bind(this);
     this._videoThumbnails = this._videoThumbnails.bind(this);
@@ -244,18 +121,12 @@ export default class SessionVideo extends React.Component {
   }
 
   _videos() {
-    return Object.keys(this.state.users).map((key, index) => {
+    console.log(this.state.videoSrc);
+    return Object.keys(this.state.videoSrc).map((key, index) => {
+      var video = this.state.videoSrc[key];
       var display = {display: 'block'};
-      // console.log(key + ': '+ this.state.currentUserId);
       if (key != this.state.currentVideo) display = {display: 'none'};
-      if (key == this.state.currentUserId) {
-        var vid = <video muted key={'video-' + key} className="video" id={'video-' + key} value={'video-' + key} style={display} autoPlay></video>;
-        // console.log(vid);
-        vid.muted = true;
-        return (vid);
-      } else {
-          return (<video key={'video-' + key} className="video" id={'video-' + key} value={'video-' + key} style={display} autoPlay></video>);
-      }
+      return (<video src={ $(video).attr("src") } controls="controls" muted key={'video-' + key} className="video" id={'video-' + key} value={'video-' + key} style={display} autoPlay></video>);
     });
   }
 
@@ -283,10 +154,22 @@ export default class SessionVideo extends React.Component {
     this.setState({currentVideo: id});
   }
 
+  handleScriptCreate() {
+    this.setState({ scriptLoaded: false })
+  }
+
+  handleScriptError() {
+    this.setState({ scriptError: true })
+  }
+
+  handleScriptLoad() {
+    this.setState({ scriptLoaded: true })
+  }
+
   render() {
     return (
       <div className="video-session">
-        <div className="video-container">
+        <div id="video-container" className="video-container">
           {this._videos()}
           <div className="error-message" id="error"></div>
         </div>

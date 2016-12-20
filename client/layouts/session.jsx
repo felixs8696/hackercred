@@ -26,6 +26,7 @@ const muiTheme = getMuiTheme({
 export class Session extends React.Component {
   componentWillMount() {
     const sessionId = FlowRouter.getParam('sessionId');
+    console.log(sessionId);
     this.setState({id: sessionId});
     const userId = Meteor.userId();
     if (userId) {
