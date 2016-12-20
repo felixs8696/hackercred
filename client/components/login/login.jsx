@@ -2,17 +2,19 @@ import React from 'react';
 import { Accounts } from 'meteor/accounts-base';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
-function enterSite(sessionId) {
-  if (!sessionId || sessionId.length == 0) {
+function enterSite(ownerId, sessionId) {
+  if (!sessionId || sessionId.length == 0 || !ownerId || ownerId.length == 0) {
+    console.log("Session does not exist");
     FlowRouter.go("/");
   } else {
-    FlowRouter.go("/" + sessionId);
+    FlowRouter.go("/" + ownerId + "/" + sessionId);
   }
 }
 
 class LoginForm extends React.Component {
   componentWillMount() {
-    this.setState({id: FlowRouter.getParam('sessionId')});
+    this.setState({sessionId: FlowRouter.getParam('sessionId')});
+    this.setState({ownerId: FlowRouter.getParam('ownerId')});
   }
 
   constructor(props) {
@@ -65,7 +67,7 @@ class LoginForm extends React.Component {
             const userId = Meteor.userId();
             console.log("Logged In: " + userId);
             this.props.updateMeteorId(userId);
-            enterSite(this.state.id);
+            enterSite(this.state.ownerId, this.state.sessionId);
             return true;
           }
         });
@@ -92,7 +94,7 @@ class LoginForm extends React.Component {
             const userId = Meteor.userId();
             console.log("Logged In: " + userId);
             this.props.updateMeteorId(userId);
-            enterSite(this.state.id);
+            enterSite(this.state.ownerId, this.state.sessionId);
             return true;
           }
         });

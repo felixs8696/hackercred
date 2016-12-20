@@ -23,7 +23,7 @@ if (Meteor.isClient) {
   import LoginContainer from '/client/containers/login.js';
 }
 
-FlowRouter.route("/:sessionId?/login", {
+FlowRouter.route("/:ownerId?/:sessionId?/login", {
   name: "login",
   action: (params) => {
     mount(Login, {
@@ -66,8 +66,9 @@ FlowRouter.route("/:ownerId/:sessionId", {
   name: "session",
   triggersEnter: [function(context, redirect) {
     const sessionId = context.params.sessionId;
+    const ownerId = context.params.ownerId;
     if (!Meteor.userId()) {
-      redirect('login', {sessionId: sessionId});
+      redirect('login', {sessionId: sessionId, ownerId: ownerId});
     } else {
       console.log(context);
       const subscription = Meteor.subscribe("sessions", {
